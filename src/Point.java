@@ -8,8 +8,12 @@ public class Point {
 		y = yVal;
 	}
 	public Point(Point toCopy){
+<<<<<<< HEAD
+		this(toCopy.getX(), toCopy.getY());
+=======
 		x = toCopy.getX();
 		y = toCopy.getY();
+>>>>>>> e254c4701d502e5da4e35994f3d228257290c00f
 	}
 	public String toString(){
 		return "( " + x + " , " + y + " )";
@@ -26,4 +30,10 @@ public class Point {
 	public void setY(int value){
 		x = value;
 	}
+<<<<<<< HEAD
+	public boolean equals(Point compare){
+		return (getX() == compare.getX() && getY() == compare.getY());
+	}
+=======
+>>>>>>> e254c4701d502e5da4e35994f3d228257290c00f
 }
