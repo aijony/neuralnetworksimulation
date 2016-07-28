@@ -83,5 +83,13 @@ public class Unit {
 	private void stepTo(double xMove, double yMove){
 		setPos(new Point((int)(loc.getX() + xMove), (int)(loc.getY() + yMove)));
 	}
-	
+	private double qualifyAngle(double angle, boolean xPositive, boolean yPositive){
+		if (xPositive && yPositive || !xPositive && yPositive)
+			return angle;
+		else
+			return (2 * Math.PI) - angle;
+	}
+	private boolean isPositive(double number){
+		return true;
+	}
 }
