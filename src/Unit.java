@@ -7,7 +7,6 @@ public class Unit {
 	private int health;
 	private int speed;
 	private int cost;
-	private Unit target;
 	private Point loc;
 	public Unit(int r, int d, int h, int s, int c) {
 		range = r; damage = d; health = h; speed = s; cost = c;
@@ -45,7 +44,7 @@ public class Unit {
 		
 		double distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
 		double angleToPoint = Math.acos(xDiff / distance);
-		
+		angleToPoint = qualifyAngle(angleToPoint, isPositive(xDiff), isPositive(yDiff));
 		System.out.println("Angle: " + angleToPoint);
 		System.out.println("Distance: " + distance);
 		System.out.println("Speed: " + getSpeed());
@@ -54,20 +53,23 @@ public class Unit {
 			if (distance >= getSpeed()){
 				xMove = getSpeed()*Math.cos(angleToPoint);
 				yMove = getSpeed()*Math.sin(angleToPoint);
+				System.out.println("Distance is greater than speed");
 			}
 			else {
 				xMove = xDiff;
 				yMove = yDiff;
 			}
 			System.out.println("xMove: " + xMove + " yMove: " + yMove);
+			System.out.println("Distance before move: " + distance);
+			System.out.println("Current: " + loc + " Goal: " + newPoint);
 			
+			stepTo(xMove, yMove);
 			xDiff -= xMove;
 			yDiff -= yMove;
-			stepTo(xMove, yMove);
+			
 		
 			System.out.println("Current: " + loc + " Goal: " + newPoint);
 			distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
-			System.out.println("Distance: " + distance);
 			System.out.println("xDiff: " + xDiff + " yDiff: " + yDiff);
 			try {
 				System.in.read();
@@ -81,7 +83,7 @@ public class Unit {
 		
 	}
 	private void stepTo(double xMove, double yMove){
-		setPos(new Point((int)(loc.getX() + xMove), (int)(loc.getY() + yMove)));
+		setPos(new Point(((double)loc.getX() + xMove), ((double)loc.getY() + yMove)));
 	}
 	private double qualifyAngle(double angle, boolean xPositive, boolean yPositive){
 		if (xPositive && yPositive || !xPositive && yPositive)
@@ -90,6 +92,6 @@ public class Unit {
 			return (2 * Math.PI) - angle;
 	}
 	private boolean isPositive(double number){
-		return true;
+		return (number >= 0);
 	}
 }

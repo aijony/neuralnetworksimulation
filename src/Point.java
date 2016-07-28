@@ -1,9 +1,9 @@
 
 public class Point {
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 	
-	public Point(int xVal, int yVal){
+	public Point(double xVal, double yVal){
 		x = xVal;
 		y = yVal;
 	}
@@ -15,16 +15,16 @@ public class Point {
 	public String toString(){
 		return "( " + x + " , " + y + " )";
 	}
-	public int getX(){
+	public double getX(){
 		return x;
 	}
-	public int getY(){
+	public double getY(){
 		return y;
 	}
-	public void setX(int value){
+	public void setX(double value){
 		y = value;
 	}
-	public void setY(int value){
+	public void setY(double value){
 		x = value;
 	}
 	public boolean equals(Point compare){
