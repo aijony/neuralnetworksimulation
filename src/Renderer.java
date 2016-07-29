@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 import javax.rmi.CORBA.Util;
 import org.lwjgl.opengl.GL;
@@ -24,9 +25,9 @@ public class Renderer {
     private int vaoID;
     private int vboID;
 	
-    private int vboVertID;
-    private int vboColID;
     
+    private int eboID;
+
     private ShaderManager shaderManager;
     
     private float sp;
@@ -47,71 +48,73 @@ public class Renderer {
 		
 		shaderManager = new ShaderManager();
 		shaderManager.attachAndLinkShaders();
-		
-		//TODO dispose 
 		 
 		// Generate and bind a Vertex Array
 	    vaoID = glGenVertexArrays();
 	    glBindVertexArray(vaoID);
 
-	    // The vertices of our Triangle
+
 	    float[] vertices = new float[]
 	    {
-	        +0.0f, +0.8f,    // Top coordinate
-	        -0.8f, -0.8f,    // Bottom-left coordinate
-	        +0.8f, -0.8f     // Bottom-right coordinate
+	    	 // x,    y,     r, g, b, a
+	    	 -0.8f, +0.8f,   1, 0, 0, 1,
+	    	 +0.8f, +0.8f,   0, 1, 0, 1,
+	    	 -0.8f, -0.8f,   0, 0, 1, 1,
+	    	 +0.8f, -0.8f,   1, 1, 1, 1
 	    };
 	    
-	    float[] colors = new float[]
-	    {
-	    	1, 0, 0, 1,
-	    	0, 1, 0, 1,
-	    	0, 0, 1, 1
-	    };
-	  
+        // The indices that form the rectangle
+        short[] indices = new short[]
+        {
+            0, 1, 2,  // The indices for the left triangle
+            1, 2, 3   // The indices for the right triangle
+        };
 
-	    glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
-	    // Create a FloatBuffer of vertices
-	    //This must be done so openGL can work with a native type
-	    FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
-	    verticesBuffer.put(vertices).flip();
+     // Create a ShortBuffer of indices
+        ShortBuffer indicesBuffer = BufferUtils.createShortBuffer(indices.length);
+        indicesBuffer.put(indices).flip();
 
-	    
-	    vboColID = glGenBuffers();
-	    glBindBuffer(GL_ARRAY_BUFFER, vboColID);
-	    glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-	    
-	    
-	    // Create a Buffer Object and upload the vertices buffer
-	    vboID = glGenBuffers();
-	    //Activates buffer
-	    glBindBuffer(GL_ARRAY_BUFFER, vboID);
-	    //Sends buffer to GPU
-	    glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-
-	    // Point the buffer at location 0, the location we set
-	    // inside the vertex shader. You can use any location
-	    // but the locations should match
-	    glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
-	    
-	    
-        // Create a FloatBuffer of colors
-        FloatBuffer colorsBuffer = BufferUtils.createFloatBuffer(colors.length);
-        colorsBuffer.put(colors).flip();
-
-        // Create a Buffer Object and upload the colors buffer
-        vboColID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboColID);
+        // Create the Element Buffer object
+        eboID = glGenBuffers();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
         
-        glBufferData(GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
+        // Create a FloatBuffer of vertices
+        FloatBuffer interleavedBuffer = BufferUtils.createFloatBuffer(vertices.length);
+        interleavedBuffer.put(vertices).flip();
+
+        // Create a Buffer Object and upload the vertices buffer
+        vboID = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, vboID);
+        glBufferData(GL_ARRAY_BUFFER, interleavedBuffer, GL_STATIC_DRAW);
+
+
+     // The size of float, in bytes (will be 4)
+        final int sizeOfFloat = Float.SIZE / Byte.SIZE;
+
+        // The sizes of the vertex and color components
+        final int vertexSize = 2 * sizeOfFloat;
+        final int colorSize  = 4 * sizeOfFloat;
+
+        // The 'stride' is the sum of the sizes of individual components
+        final int stride = vertexSize + colorSize;
+
+        // The 'offset is the number of bytes from the start of the tuple
+        final long offsetPosition = 0;
+        final long offsetColor    = 2 * sizeOfFloat;
+
+        // Setup pointers using 'stride' and 'offset' we calculated above
+        glVertexAttribPointer(0, 2, GL_FLOAT, false, stride, offsetPosition);
+        glVertexAttribPointer(1, 4, GL_FLOAT, false, stride, offsetColor);
+        
+	    
+	    
+	    
         
 
-        // Point the buffer at location 1, the location we set
-        // inside the vertex shader. You can use any location
-        // but the locations should match
-        glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
-
         
+        
+
         // Enable the vertex attribute locations
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -143,8 +146,9 @@ public class Renderer {
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
 
-        // Draw a triangle of 3 vertices
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Draw a rectangle of 4 vertices, so it is 6 indices
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
         // Disable our location
         glDisableVertexAttribArray(0);
@@ -166,7 +170,10 @@ public class Renderer {
         // Dispose the buffer object
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(vboID);
-        glDeleteBuffers(vboVertID);
-        glDeleteBuffers(vboColID);
+        
+        // Dispose the element buffer object
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDeleteBuffers(eboID);
+
 	}
 }
