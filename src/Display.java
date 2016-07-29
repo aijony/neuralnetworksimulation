@@ -91,9 +91,10 @@ public class Display {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			renderer.update();
 			renderer.render();
+			
+			glfwPollEvents();
 			glfwSwapBuffers(windowID);
 
-			glfwPollEvents();
 		}
 		terminate();
 	}

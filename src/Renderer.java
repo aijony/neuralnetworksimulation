@@ -1,20 +1,32 @@
 import static org.lwjgl.opengl.GL11.*;
 
 
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
+
 import javax.rmi.CORBA.Util;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
  
 import org.lwjgl.opengl.GL11;
+
 import org.lwjgl.opengl.GL20;
  
 public class Renderer {
 	
+    private int vaoID;
+    private int vboID;
+	
+    int programId;
 	public Renderer(){
+		
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -28,7 +40,7 @@ public class Renderer {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		//Create the shader program. If OK, create vertex and fragment shaders
-		int programId = glCreateProgram();
+		programId = glCreateProgram();
 		
 		int vertShader = loadAndCompileShader("res/vertex.vert", GL_VERTEX_SHADER);
 		int fragShader = loadAndCompileShader("res/fragment.frag", GL_FRAGMENT_SHADER);
@@ -36,10 +48,37 @@ public class Renderer {
 		//Attach the compiled shaders to the program.
 		glAttachShader(programId, vertShader);
 		glAttachShader(programId, fragShader);
-		 
-		//Now link the program
 		glLinkProgram(programId);
- 
+		
+		
+		//TODO dispose 
+		 
+		// Generate and bind a Vertex Array
+	    vaoID = glGenVertexArrays();
+	    glBindVertexArray(vaoID);
+
+	    // The vertices of our Triangle
+	    float[] vertices = new float[]
+	    {
+	        +0.0f, +0.8f,    // Top coordinate
+	        -0.8f, -0.8f,    // Bottom-left coordinate
+	        +0.8f, -0.8f     // Bottom-right coordinate
+	    };
+
+	    // Create a FloatBuffer of vertices
+	    FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
+	    verticesBuffer.put(vertices).flip();
+
+	    // Create a Buffer Object and upload the vertices buffer
+	    vboID = glGenBuffers();
+	    glBindBuffer(GL_ARRAY_BUFFER, vboID);
+	    glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+
+	    // Point the buffer at location 0, the location we set
+	    // inside the vertex shader. You can use any location
+	    // but the locations should match
+	    glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+	    glBindVertexArray(0);
 	}
 	
 	private int loadAndCompileShader(String filepath, int shaderType)
@@ -57,14 +96,11 @@ public class Renderer {
 		//Compiles the shader
 		glCompileShader(shaderHandle);
  
-		//Acquire compilation status
-		int shaderStatus = glGetShaderi(shaderHandle, GL_COMPILE_STATUS);
- 
-		//Check whether compilation was successful
-		if( shaderStatus == GL_FALSE)
-		{
-			throw new IllegalStateException("Shader did not compile ["+filepath+"]. Reason: " + glGetShaderInfoLog(shaderHandle, 1000));
-		}
+		// Check for errors
+        if (glGetShaderi(shaderHandle, GL_COMPILE_STATUS) == GL_FALSE)
+            throw new RuntimeException("Error creating vertex shader\n"
+                                       + glGetShaderInfoLog(shaderHandle, glGetShaderi(shaderHandle, GL_INFO_LOG_LENGTH)));
+
  
 		return shaderHandle;
     }
@@ -100,17 +136,27 @@ public class Renderer {
 	
 	public void render()
 	{
-		
-		//Out of date render technique that will be shortly updated.
-		glBegin(GL_QUADS);
-		{
-			glColor3f(0.0f, 1.0f, 0.0f);
+		 // Clear the screen
+        glClear(GL_COLOR_BUFFER_BIT);
 
-			glVertex3f(-0.5f, -0.5f, 0.0f);
-			glVertex3f(0.5f, -0.5f, 0.0f);
-			glVertex3f(0.5f, 0.5f, 0.0f);
-			glVertex3f(-0.5f, 0.5f, 0.0f);
-		}
-		glEnd();
+        //Now link the program
+      	glUseProgram(programId); 
+      		
+
+        // Bind the vertex array and enable our location
+        glBindVertexArray(vaoID);
+        glEnableVertexAttribArray(0);
+
+        // Draw a triangle of 3 vertices
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Disable our location
+        glDisableVertexAttribArray(0);
+        glBindVertexArray(0);
+
+        // Un-bind our program
+        glUseProgram(0);
+
+       
 	}
 }
