@@ -24,9 +24,13 @@ public class Renderer {
     private int vaoID;
     private int vboID;
 	
+    private int vboVertID;
+    private int vboColID;
     
     private ShaderManager shaderManager;
     
+    private float sp;
+    private boolean swapcolor;
 	public Renderer(){
 		
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -57,26 +61,73 @@ public class Renderer {
 	        -0.8f, -0.8f,    // Bottom-left coordinate
 	        +0.8f, -0.8f     // Bottom-right coordinate
 	    };
+	    
+	    float[] colors = new float[]
+	    {
+	    	1, 0, 0, 1,
+	    	0, 1, 0, 1,
+	    	0, 0, 1, 1
+	    };
+	  
 
+	    glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
 	    // Create a FloatBuffer of vertices
+	    //This must be done so openGL can work with a native type
 	    FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
 	    verticesBuffer.put(vertices).flip();
 
+	    
+	    vboColID = glGenBuffers();
+	    glBindBuffer(GL_ARRAY_BUFFER, vboColID);
+	    glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+	    
+	    
 	    // Create a Buffer Object and upload the vertices buffer
 	    vboID = glGenBuffers();
+	    //Activates buffer
 	    glBindBuffer(GL_ARRAY_BUFFER, vboID);
+	    //Sends buffer to GPU
 	    glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 
 	    // Point the buffer at location 0, the location we set
 	    // inside the vertex shader. You can use any location
 	    // but the locations should match
 	    glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+	    
+	    
+        // Create a FloatBuffer of colors
+        FloatBuffer colorsBuffer = BufferUtils.createFloatBuffer(colors.length);
+        colorsBuffer.put(colors).flip();
+
+        // Create a Buffer Object and upload the colors buffer
+        vboColID = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, vboColID);
+        
+        glBufferData(GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
+        
+
+        // Point the buffer at location 1, the location we set
+        // inside the vertex shader. You can use any location
+        // but the locations should match
+        glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
+
+        
+        // Enable the vertex attribute locations
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        
 	    glBindVertexArray(0);
 	}
 	
 	public void update()
 	{
-		
+		 sp = sp+0.001f;
+		     if(sp > 1.0f)
+		     {
+		         sp = 0.0f;
+		         swapcolor = !swapcolor;
+		     }
+
 	}
 	
 	public void render()
@@ -85,6 +136,8 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderManager.linkShader(true);
+        
+        
 
         // Bind the vertex array and enable our location
         glBindVertexArray(vaoID);
@@ -113,5 +166,7 @@ public class Renderer {
         // Dispose the buffer object
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(vboID);
+        glDeleteBuffers(vboVertID);
+        glDeleteBuffers(vboColID);
 	}
 }
