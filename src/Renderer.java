@@ -70,7 +70,7 @@ public class Renderer {
             1, 2, 3   // The indices for the right triangle
         };
 
-     // Create a ShortBuffer of indices
+        // Create a ShortBuffer of indices
         ShortBuffer indicesBuffer = BufferUtils.createShortBuffer(indices.length);
         indicesBuffer.put(indices).flip();
 
@@ -107,30 +107,47 @@ public class Renderer {
         glVertexAttribPointer(0, 2, GL_FLOAT, false, stride, offsetPosition);
         glVertexAttribPointer(1, 4, GL_FLOAT, false, stride, offsetColor);
         
-	    
-	    
-	    
-        
 
-        
-        
 
         // Enable the vertex attribute locations
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         
 	    glBindVertexArray(0);
+	    // Bind to the index VBO that has all the information about the order of the vertices
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
 	public void update()
 	{
-		 sp = sp+0.001f;
+		
+		 sp = sp+0.002f;
 		     if(sp > 1.0f)
 		     {
 		         sp = 0.0f;
 		         swapcolor = !swapcolor;
 		     }
+		     
+		     
+		// Update vertices in the VBO, first bind the VBO
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		 
+		float[] vertices = new float[]
+				    {
+				    	 // x,    y,     r, g, b, a
+				    	 -sp, +sp,   1, 0, 0, 1,
+				    	 +sp, +sp,   0, 1, 0, 1,
+				    	 -sp, -sp,   0, 0, 1, 1,
+				    	 +sp, -sp,   1, 1, 1, 1
+				    };
+		 
+		// Create a FloatBuffer of vertices
+	    FloatBuffer interleavedBuffer = BufferUtils.createFloatBuffer(vertices.length);
+	    interleavedBuffer.put(vertices).flip();
 
+	    glBufferData(GL_ARRAY_BUFFER, interleavedBuffer, GL_STATIC_DRAW);    
+		// Update vertices in the VBO, first bind the VBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);   
 	}
 	
 	public void render()
@@ -145,14 +162,18 @@ public class Renderer {
         // Bind the vertex array and enable our location
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
 
-
+        
+        
         // Draw a rectangle of 4 vertices, so it is 6 indices
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
         // Disable our location
-        glDisableVertexAttribArray(0);
         glBindVertexArray(0);
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // Un-bind our program
         shaderManager.linkShader(false);

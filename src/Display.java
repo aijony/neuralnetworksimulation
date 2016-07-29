@@ -94,13 +94,14 @@ public class Display {
 			
 			glfwPollEvents();
 			glfwSwapBuffers(windowID);
-
+			
 		}
+		renderer.dispose();
 		terminate();
 	}
 	
 	public void terminate(){
-		renderer.dispose();
+		
 		glfwDestroyWindow(windowID);
         glfwTerminate();
 	}
