@@ -25,6 +25,9 @@ public class Renderer {
     private int vboID;
 	
     int programId;
+    
+    private ShaderManager shaderManager;
+    
 	public Renderer(){
 		
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -39,17 +42,8 @@ public class Renderer {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		//Create the shader program. If OK, create vertex and fragment shaders
-		programId = glCreateProgram();
-		
-		int vertShader = loadAndCompileShader("res/vertex.vert", GL_VERTEX_SHADER);
-		int fragShader = loadAndCompileShader("res/fragment.frag", GL_FRAGMENT_SHADER);
-		
-		//Attach the compiled shaders to the program.
-		glAttachShader(programId, vertShader);
-		glAttachShader(programId, fragShader);
-		glLinkProgram(programId);
-		
+		shaderManager = new ShaderManager();
+		shaderManager.attachAndLinkShaders();
 		
 		//TODO dispose 
 		 
@@ -81,54 +75,6 @@ public class Renderer {
 	    glBindVertexArray(0);
 	}
 	
-	private int loadAndCompileShader(String filepath, int shaderType)
-    {
-		//vertShader will be non zero if succefully created
-		//Handle is used as a reference
-		int shaderHandle = glCreateShader(shaderType);
-		
-		//Shader string
-		String shaderCode = loadString(filepath);
- 
-		//Uploads shader to openGL
-		glShaderSource(shaderHandle, shaderCode);
- 
-		//Compiles the shader
-		glCompileShader(shaderHandle);
- 
-		// Check for errors
-        if (glGetShaderi(shaderHandle, GL_COMPILE_STATUS) == GL_FALSE)
-            throw new RuntimeException("Error creating vertex shader\n"
-                                       + glGetShaderInfoLog(shaderHandle, glGetShaderi(shaderHandle, GL_INFO_LOG_LENGTH)));
-
- 
-		return shaderHandle;
-    }
- 
-	/**
-	 * Load a text file and return its contents as a String.
-	 */
-	private String loadString(String filepath)
-	{
-		StringBuilder shaderString = new StringBuilder();
-		String line = null ;
-		try
-		{
-		    BufferedReader reader = new BufferedReader(new FileReader(filepath));
-		    while( (line = reader.readLine()) !=null )
-		    {
-		    	shaderString.append(line);
-		    	shaderString.append('\n');
-		    }
-		}
-		catch(Exception e)
-		{
-			throw new IllegalArgumentException("Unable to load shader from file ["+filepath+"]", e);
-		}
- 
-		return shaderString.toString();
-	}
-	
 	public void update()
 	{
 		
@@ -139,9 +85,7 @@ public class Renderer {
 		 // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //Now link the program
-      	glUseProgram(programId); 
-      		
+        shaderManager.linkShader(true);
 
         // Bind the vertex array and enable our location
         glBindVertexArray(vaoID);
@@ -155,8 +99,7 @@ public class Renderer {
         glBindVertexArray(0);
 
         // Un-bind our program
-        glUseProgram(0);
-
+        shaderManager.linkShader(false);
        
 	}
 }

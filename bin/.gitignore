@@ -2,3 +2,6 @@
 /Display.class
 /Graphics.class
 /Renderer.class
+/ShaderManager.class
+/FileUtility.class
+/ShaderManager2.class
