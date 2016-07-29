@@ -1,11 +1,13 @@
 public class Unit {
 	
-	private String name;	//name of unit
-	private int range;		//maximum distance another unit can be for this unit to have increased accuracy
-	private int damage;		//health of target depleted on "attack"
-	private int health;		//amount of damage unit can take before target wins
-	private int speed;		//distance unit can cover in one movement step
-	private Point loc;		//current position on xy plane
+	private String name;		//name of unit
+	private int range;			//maximum distance another unit can be for this unit to have increased accuracy
+	private int damage;			//health of target depleted on "attack"
+	private int health;			//amount of damage unit can take before target wins
+	private int speed;			//distance unit can cover in one movement step
+	private double orientation;	//angle unit is facing (0-2PI)
+	private Point loc;			//current position on xy plane
+	private Unit targetUnit;	//opponent unit
 	
 	
 	/*
@@ -16,6 +18,7 @@ public class Unit {
 		range = r; damage = d; health = h; speed = s;
 		name = n;
 		loc = p;
+		orientation = 0;
 	}
 	public void setPos(Point position){	loc = position;	}
 	public Point getPos(){	return loc;}
@@ -25,13 +28,34 @@ public class Unit {
 	public int decreaseHealth(int amount){	health -= amount;	return health;}
 	public int getSpeed(){	return speed;}
 	
+	/*
+	 * 	@brief	sets target point to random xy coordinate from (0, 0) to (100, 100)
+	 * 
+	 * 	@returns void
+	 */
 	public void initializeMovement(){
-		Point targetPoint = new Point((int)(Math.random() * 100), (int)(Math.random() * 100));
+		Point targetPoint = randomPoint(0, 0, 100, 100);
 		System.out.println(name + " is moving from " + loc + " to " + targetPoint);
 		moveTo(targetPoint);
 	}
 	
+	private void fire(Point target){
+		
+	}
 	
+	public void attack(){
+		if (withinRange(targetUnit.getPos()))
+			fire(targetUnit.getPos());
+		else
+			fire(randomPoint(0, 0, 100, 100));
+		
+	}
+	/*
+	 * @brief	returns random xy coordinate between self-documenting parameters
+	 */
+	private Point randomPoint(int xMin, int yMin, int xMax, int yMax){
+		return new Point((Math.random() * (xMax - xMin)) + xMin, (Math.random() * (yMax - yMin)) + yMin);
+	}
 	/*
 	 * @brief	determines whether or not given point is within range
 	 *			as related to range statistic 
@@ -58,11 +82,11 @@ public class Unit {
 										//will be speed of unit
 		
 		double distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
-		double angleToPoint = qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff));
+		orientation = qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff));
 		while (!newPoint.equals(loc)){
 			if (distance >= getSpeed()){
-				xMove = getSpeed()*Math.cos(angleToPoint);
-				yMove = getSpeed()*Math.sin(angleToPoint);
+				xMove = getSpeed()*Math.cos(orientation);
+				yMove = getSpeed()*Math.sin(orientation);
 			}
 			else {
 				xMove = xDiff;
