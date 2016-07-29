@@ -100,6 +100,7 @@ public class Display {
 	}
 	
 	public void terminate(){
+		renderer.dispose();
 		glfwDestroyWindow(windowID);
         glfwTerminate();
 	}

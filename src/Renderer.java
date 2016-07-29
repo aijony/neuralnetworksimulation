@@ -24,7 +24,6 @@ public class Renderer {
     private int vaoID;
     private int vboID;
 	
-    int programId;
     
     private ShaderManager shaderManager;
     
@@ -36,7 +35,7 @@ public class Renderer {
 		// creates the GLCapabilities instance and makes the OpenGL
 		// bindings available for use.
 		GL.createCapabilities();
-		// 2D games generally won't require depth testing 
+		// 2D renders generally won't require depth testing 
 		glDisable(GL_DEPTH_TEST);
 		// Enable blending
 		glEnable(GL_BLEND);
@@ -101,5 +100,18 @@ public class Renderer {
         // Un-bind our program
         shaderManager.linkShader(false);
        
+	}
+
+	public void dispose() {
+		 // Dispose the program
+        shaderManager.dispose();
+
+        // Dispose the vertex array
+        glBindVertexArray(0);
+        glDeleteVertexArrays(vaoID);
+
+        // Dispose the buffer object
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glDeleteBuffers(vboID);
 	}
 }

@@ -1,30 +1,21 @@
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import static org.lwjgl.opengl.GL20.glAttachShader;
-import static org.lwjgl.opengl.GL20.glCompileShader;
-import static org.lwjgl.opengl.GL20.glCreateProgram;
-import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
-import static org.lwjgl.opengl.GL20.glGetShaderi;
-import static org.lwjgl.opengl.GL20.glLinkProgram;
-import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.*;
 
 public class ShaderManager {
 
 private int programID;
 	
+
+private int vertShader;
+private int fragShader;
 public ShaderManager(){
 	//Create the shader program. If OK, create vertex and fragment shaders
 	programID = glCreateProgram();	
 }
 
 public void attachAndLinkShaders(){
-	int vertShader = loadAndCompileShader("res/vertex.vert", GL_VERTEX_SHADER);
-	int fragShader = loadAndCompileShader("res/fragment.frag", GL_FRAGMENT_SHADER);
+	vertShader = loadAndCompileShader("res/vertex.vert", GL_VERTEX_SHADER);
+	fragShader = loadAndCompileShader("res/fragment.frag", GL_FRAGMENT_SHADER);
 	
 	//Attach the compiled shaders to the program.
 	glAttachShader(programID, vertShader);
@@ -66,5 +57,20 @@ public void linkShader(boolean doLink){
 	// Un-bind our program
     glUseProgram(0);
 	}
+}
+
+public void dispose() {
+
+
+    // Detach the shaders
+    glDetachShader(programID, vertShader);
+    glDetachShader(programID, fragShader);
+
+    // Delete the shaders
+    glDeleteShader(vertShader);
+    glDeleteShader(vertShader);
+
+    // Delete the program
+    glDeleteProgram(programID);
 }
 }
