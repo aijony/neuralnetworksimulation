@@ -24,11 +24,16 @@ public class Polygon {
 
 		float[] vertices = new float[] {
 				// x, y, r, g, b, a
-				-0.8f, +0.8f, 1, 0, 0, 1, +0.8f, +0.8f, 0, 1, 0, 1, -0.8f, -0.8f, 0, 0, 1, 1, +0.8f, -0.8f, 1, 1, 1,
-				1 };
+				-0.8f, +0.8f, 1, 0, 0, 1,
+				+0.8f, +0.8f, 0, 1, 0, 1,
+				-0.8f, -0.8f, 0, 0, 1, 1,
+				+0.8f, -0.8f, 1, 1, 1, 1
+				};
 
 		// The indices that form the rectangle
-		short[] indices = new short[] { 0, 1, 2, // The indices for the left
+		short[] indices = new short[] { 
+				
+				0, 1, 2, // The indices for the left
 													// triangle
 				1, 2, 3 // The indices for the right triangle
 		};
@@ -85,8 +90,11 @@ public class Polygon {
 
 		float[] vertices = new float[] {
 				// x, y, r, g, b, a
-				-input, +input, 1, 0, 0, 1, +input, +input, 0, 1, 0, 1, -input, -input, 0, 0, 1, 1, +input, -input, 1,
-				1, 1, 1 };
+				-input, +input, 1, 0, 0, 1,
+				+input, +input, 0, 1, 0, 1,
+				-input, -input, 0, 0, 1, 1,
+				+input, -input, 1, 1, 1, 1
+				};
 
 		// Create a FloatBuffer of vertices
 		FloatBuffer interleavedBuffer = BufferUtils.createFloatBuffer(vertices.length);
