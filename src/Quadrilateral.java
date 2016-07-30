@@ -15,12 +15,12 @@ import java.nio.ShortBuffer;
 
 import org.lwjgl.BufferUtils;
 
-public class Polygon {
+public class Quadrilateral {
 
 	private int vboID;
 	private int eboID;
 
-	public Polygon() {
+	public Quadrilateral() {
 
 		float[] vertices = new float[] {
 				// x, y, r, g, b, a

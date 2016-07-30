@@ -12,7 +12,7 @@ public class Renderer {
 
 	private ShaderManager shaderManager;
 
-	private Polygon polygon;
+	private Quadrilateral quadrilateral;
 
 	private float sp;
 	private boolean swapcolor;
@@ -38,7 +38,7 @@ public class Renderer {
 		vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);
 
-		polygon = new Polygon();
+		quadrilateral = new Quadrilateral();
 
 	}
 
@@ -50,7 +50,7 @@ public class Renderer {
 			swapcolor = !swapcolor;
 		}
 
-		polygon.update(sp);
+		quadrilateral.update(sp);
 
 	}
 
@@ -87,7 +87,7 @@ public class Renderer {
 		glBindVertexArray(0);
 		glDeleteVertexArrays(vaoID);
 
-		polygon.dispose();
+		quadrilateral.dispose();
 
 	}
 }
