@@ -140,7 +140,6 @@ public class Quadrilateral {
 
 		// Dispose the program
 		shaderManager.dispose();
-		
 		// Dispose the buffer object
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDeleteBuffers(vboID);
