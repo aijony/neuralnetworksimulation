@@ -1,4 +1,7 @@
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_SHORT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
@@ -6,35 +9,45 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import org.lwjgl.BufferUtils;
 
+
 public class Quadrilateral {
 
+	private ShaderManager shaderManager;
+	
+	private int vaoID;	
 	private int vboID;
 	private int eboID;
-
 	public Quadrilateral() {
+		
+		shaderManager = new ShaderManager();
+		shaderManager.attachAndLinkShaders();
 
+
+		// Generate and bind a Vertex Array
+		vaoID = glGenVertexArrays();
+		glBindVertexArray(vaoID);
 		float[] vertices = new float[] {
 				// x, y, r, g, b, a
-				-0.8f, +0.8f, 1, 0, 0, 1,
-				+0.8f, +0.8f, 0, 1, 0, 1,
-				-0.8f, -0.8f, 0, 0, 1, 1,
-				+0.8f, -0.8f, 1, 1, 1, 1
-				};
+				-0.8f, +0.8f, 1, 0, 0, 1, +0.8f, +0.8f, 0, 1, 0, 1, -0.8f, -0.8f, 0, 0, 1, 1, +0.8f, -0.8f, 1, 1, 1,
+				1 };
 
 		// The indices that form the rectangle
-		short[] indices = new short[] { 
-				
+		short[] indices = new short[] {
+
 				0, 1, 2, // The indices for the left
-													// triangle
+							// triangle
 				1, 2, 3 // The indices for the right triangle
 		};
 
@@ -90,11 +103,8 @@ public class Quadrilateral {
 
 		float[] vertices = new float[] {
 				// x, y, r, g, b, a
-				-input, +input, 1, 0, 0, 1,
-				+input, +input, 0, 1, 0, 1,
-				-input, -input, 0, 0, 1, 1,
-				+input, -input, 1, 1, 1, 1
-				};
+				-input, +input, 1, 0, 0, 1, +input, +input, 0, 1, 0, 1, -input, -input, 0, 0, 1, 1, +input, -input, 1,
+				1, 1, 1 };
 
 		// Create a FloatBuffer of vertices
 		FloatBuffer interleavedBuffer = BufferUtils.createFloatBuffer(vertices.length);
@@ -105,7 +115,32 @@ public class Quadrilateral {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	public void render() {
+		shaderManager.linkShader(true);
+		// Bind the vertex array and enable our location
+		glBindVertexArray(vaoID);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
+		// Draw a rectangle of 4 vertices, so it is 6 indices
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
+		// Disable our location
+		glBindVertexArray(0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		// Un-bind our program
+		shaderManager.linkShader(false);
+	}
+
+	
 	public void dispose() {
+		
+
+		// Dispose the program
+		shaderManager.dispose();
+		
 		// Dispose the buffer object
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDeleteBuffers(vboID);
@@ -113,5 +148,7 @@ public class Quadrilateral {
 		// Dispose the element buffer object
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDeleteBuffers(eboID);
+		
+		glDeleteVertexArrays(vaoID);
 	}
 }

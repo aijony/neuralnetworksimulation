@@ -8,11 +8,9 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Renderer {
 
-	private int vaoID;
 
-	private ShaderManager shaderManager;
 
-	private Quadrilateral quadrilateral;
+	private Quadrilateral q1, q2;
 
 	private float sp;
 	private boolean swapcolor;
@@ -31,14 +29,9 @@ public class Renderer {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		shaderManager = new ShaderManager();
-		shaderManager.attachAndLinkShaders();
-
-		// Generate and bind a Vertex Array
-		vaoID = glGenVertexArrays();
-		glBindVertexArray(vaoID);
-
-		quadrilateral = new Quadrilateral();
+		
+		q1 = new Quadrilateral();
+		q2 = new Quadrilateral();
 
 	}
 
@@ -50,44 +43,22 @@ public class Renderer {
 			swapcolor = !swapcolor;
 		}
 
-		quadrilateral.update(sp);
-
+		q1.update(sp);
+		q2.update(0.4f);
 	}
 
 	public void render() {
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		shaderManager.linkShader(true);
-
-		// Bind the vertex array and enable our location
-		glBindVertexArray(vaoID);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-
-		// Draw a rectangle of 4 vertices, so it is 6 indices
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-
-		// Disable our location
-		glBindVertexArray(0);
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		// Un-bind our program
-		shaderManager.linkShader(false);
-
+		q1.render();
+		q2.render();
 	}
 
 	public void dispose() {
-		// Dispose the program
-		shaderManager.dispose();
-
 		// Dispose the vertex array
 		glBindVertexArray(0);
-		glDeleteVertexArrays(vaoID);
-
-		quadrilateral.dispose();
-
+		q1.dispose();
+		q2.dispose();
 	}
 }
