@@ -5,7 +5,7 @@ public class Vertex {
 
 	public Vertex() {
 		color = Color.white();
-		position = new Position();
+		setPosition(new Position());
 	}
 
 	public Vertex(Color inputColor, Position inputPos) {
@@ -22,8 +22,12 @@ public class Vertex {
 	}
 
 	public float[] toArray() {
-		float[] vertex = new float[] { position.getX(), position.getY(), color.getRed(), color.getBlue(),
+		float[] vertex = new float[] { getPosition().getX(), getPosition().getY(), color.getRed(), color.getBlue(),
 				color.getGreen(), color.getAlpha() };
 		return vertex;
+	}
+
+	public Position getPosition() {
+		return position;
 	}
 }

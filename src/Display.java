@@ -37,11 +37,50 @@ public class Display {
 
 	// Window handler for GLFW
 	private long windowID;
-
+	
+	private SpriteManager spriteManager;
 	/*
 	 * Initializes GLFW and setups all window/GLFW properties
 	 */
 	public Display(int width, int height, String title) {
+		init(width, height, title);
+		spriteManager = new SpriteManager();
+		VertexMatrix vertices = new VertexMatrix(4);
+		PositionMatrix positions = new PositionMatrix(4);
+		positions.setTest();
+		vertices.setPosition(positions);
+		Polygon quad = new Quadrilateral();
+		vertices.setColor(Color.red());
+		quad.update(vertices);
+		vertices.toArray();
+		int spriteID = spriteManager.newSprite(quad);
+		spriteManager.update(quad, spriteID);
+		loop();
+		
+	}
+
+	public void loop() {
+
+		while (glfwWindowShouldClose(windowID) == false) {
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			spriteManager.render();
+			
+			glfwPollEvents();
+			glfwSwapBuffers(windowID);
+
+		}
+		terminate();
+	}
+
+	public void terminate() {
+		spriteManager.dispose();
+		glfwDestroyWindow(windowID);
+		glfwTerminate();
+	}
+	
+	public void init(int width, int height, String title){
 
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -86,27 +125,5 @@ public class Display {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		
-	}
-
-	public void loop() {
-
-		while (glfwWindowShouldClose(windowID) == false) {
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			renderer.update();
-			renderer.render();
-
-			glfwPollEvents();
-			glfwSwapBuffers(windowID);
-
-		}
-		terminate();
-	}
-
-	public void terminate() {
-		renderer.dispose();
-		glfwDestroyWindow(windowID);
-		glfwTerminate();
 	}
 }

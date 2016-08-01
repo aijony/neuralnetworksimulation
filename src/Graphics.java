@@ -5,7 +5,6 @@ public class Graphics {
 
 	public void run() {
 		display = new Display(300, 300, "jason");
-		display.loop();
 	}
 
 	public static void main(String[] args) {

@@ -2,20 +2,15 @@
 public class Polygon implements RendererInterface{
 
 	private Renderer renderer;
+	private VertexMatrix vertices;
 	public Polygon(int vertexAmount){
-		renderer = new Renderer(new Vertices(vertexAmount));
-
-	}
-	public void update(){
-
-		renderer.update();
-		
+		renderer = new Renderer(new VertexMatrix(vertexAmount));
 	}
 	
-	public void update(Vertices vertexList){
-
-		renderer.update(vertexList);
-		
+	
+	public void update(VertexMatrix vertexList){		
+		setVertices(vertexList);
+		renderer.update(getVertices());
 	}
 	
 	public void render(){
@@ -23,6 +18,12 @@ public class Polygon implements RendererInterface{
 	}
 	
 	public void dispose(){
-		
+		renderer.dispose();
+	}
+	public VertexMatrix getVertices() {
+		return vertices;
+	}
+	public void setVertices(VertexMatrix vertexList) {
+		vertices = vertexList;
 	}
 }

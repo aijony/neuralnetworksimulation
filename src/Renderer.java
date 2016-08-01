@@ -25,7 +25,7 @@ public class Renderer {
 	private float input;
 	private boolean swapcolor;
 
-	public Renderer(Vertices vertexList) {
+	public Renderer(VertexMatrix vertexList) {
 		shaderManager = new ShaderManager();
 		shaderManager.attachAndLinkShaders();
 
@@ -93,7 +93,7 @@ public class Renderer {
 
 	}
 
-	public void update(Vertices vertexList) {
+	public void update(VertexMatrix vertexList) {
 		
 		// Update vertices in the VBO, first bind the VBO
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
@@ -109,7 +109,6 @@ public class Renderer {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	
-	public void update(){};
 
 	public void render() {
 		
