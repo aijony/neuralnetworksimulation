@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-# neuralnetworksimulation
-=======
 
->>>>>>> development
+# neuralnetworksimulation
+
 A simple neural network simulation.
