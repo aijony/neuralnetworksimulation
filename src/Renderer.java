@@ -120,7 +120,7 @@ public class Renderer {
 		glEnableVertexAttribArray(1);
 
 		// Draw a rectangle of 4 vertices, so it is 6 indices
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+		glDrawElements(GL_TRIANGLES, indexLength, GL_UNSIGNED_SHORT, 0);
 
 		// Disable our location
 		glBindVertexArray(0);
