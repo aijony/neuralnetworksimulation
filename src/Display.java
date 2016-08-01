@@ -35,7 +35,6 @@ import org.lwjgl.opengl.GL;
 
 public class Display {
 
-	private Renderer renderer;
 	// Window handler for GLFW
 	private long windowID;
 
@@ -87,7 +86,7 @@ public class Display {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		renderer = new Renderer(new Vertices(4));
+		
 	}
 
 	public void loop() {

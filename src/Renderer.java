@@ -94,13 +94,7 @@ public class Renderer {
 	}
 
 	public void update(Vertices vertexList) {
-
-		input = input + 0.002f;
-		if (input > 1.0f) {
-			input = 0.0f;
-			swapcolor = !swapcolor;
-		}
-
+		
 		// Update vertices in the VBO, first bind the VBO
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
 		
