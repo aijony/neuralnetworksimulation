@@ -1,5 +1,4 @@
 
-
 public class Graphics {
 
 	private Display display;

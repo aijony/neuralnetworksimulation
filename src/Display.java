@@ -72,10 +72,9 @@ public class Display {
 		glfwMakeContextCurrent(windowID);
 		glfwSwapInterval(1);
 		glfwShowWindow(windowID);
-		
-		
-		//Configure openGL
-	
+
+		// Configure openGL
+
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -87,10 +86,8 @@ public class Display {
 		// Enable blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 		
-
-		renderer = new Renderer();
+		renderer = new Renderer(new Vertices(4));
 	}
 
 	public void loop() {
@@ -100,7 +97,7 @@ public class Display {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			renderer.update();
 			renderer.render();
-			
+
 			glfwPollEvents();
 			glfwSwapBuffers(windowID);
 
