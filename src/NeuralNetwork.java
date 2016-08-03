@@ -155,23 +155,23 @@ public class NeuralNetwork {
 		
 
 		// adds the correct number of layers to the neural network
-		for (int i = 0; i < layers; i++) {
+		for (int currentLayer = 0; currentLayer < layers; currentLayer++) {
 			neuralNetwork.add(new ArrayList<Neuron>());
 		}
 
 		// adds the correct number of neurons to each layer of the neural
 		// network
-		for (int i = 0; i < neuronsPerLayer.size(); i++) {
-			for (int j = 0; j < neuronsPerLayer.get(i); j++) {
+		for (int currentLayer = 0; currentLayer < neuronsPerLayer.size(); currentLayer++) {
+			for (int currentNeuron = 0; currentNeuron < neuronsPerLayer.get(currentLayer); currentNeuron++) {
 				
 				//if we are in the first layer numberInputs applies
-				if(i == 0){
-				getNeuralNetworkLayer(i).add(new Neuron(numberRawInputs));
+				if(currentLayer == 0){
+				getNeuralNetworkLayer(currentLayer).add(new Neuron(numberRawInputs));
 				}
 				
 				//if we are not in the first layer the number of inputs = the size of the previous layer
 				else{
-				getNeuralNetworkLayer(i).add(new Neuron(getNeuralNetworkLayer(i-1).size()));
+				getNeuralNetworkLayer(currentLayer).add(new Neuron(getNeuralNetworkLayer(currentLaeyr-1).size()));
 				}
 			}
 		}
