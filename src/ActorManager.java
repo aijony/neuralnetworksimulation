@@ -19,4 +19,7 @@ public class ActorManager {
 	public static Actor getActor(int index){
 		return actors.get(index);
 	}
+	public static void updateGraphics(){
+		
+	}
 }

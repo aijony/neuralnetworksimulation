@@ -80,6 +80,9 @@ public class Actor {
 			}
 			
 			stepTo(xMove, yMove);
+			
+			
+			
 			xDiff -= xMove;
 			yDiff -= yMove;
 			
