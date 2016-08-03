@@ -15,7 +15,7 @@ public class Unit extends Actor {
 	 */
 	public Unit(int r, int d, int h, double s, int c, String n, Point p) 
 	{
-		super(p, 0, s, n);
+		super(p, 0, s, n, .05, 4);
 		//range = r;
 		damage = d; health = h; 
 	}
@@ -31,11 +31,7 @@ public class Unit extends Actor {
 	 * 
 	 * 	@returns void
 	 */
-	public void initializeMovement(){
-		Point targetPoint = randomPoint(-1, -1, 1, 1);
-		System.out.println(getName() + " is moving from " + getPos() + " to " + targetPoint);
-		moveTo(targetPoint);
-	}
+	
 	
 	private void fire(Point target){
 		

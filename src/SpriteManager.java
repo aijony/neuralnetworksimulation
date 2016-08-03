@@ -1,40 +1,39 @@
 import java.util.ArrayList;
 
-public class SpriteManager implements RendererInterface{
+public class SpriteManager{
 
 	private static ArrayList<Polygon> sprites;
 	
 	private static int count;
 	
 	public SpriteManager(){
-		sprites = new ArrayList<Polygon>();
+		
 	}
-	
+	public static void initialize(){
+		sprites = new ArrayList<Polygon>();
+		count = 0;
+	}
 	/*
-	 * Recieves a sent polygon and return ID
+	 * Receives a sent polygon and return ID
 	*/
-	public int newSprite(Polygon object){
-		sprites.add(count, object);
+	public static int newSprite(){
+		sprites.add(count, new Polygon(4));
 		return count++;
 	}
 	
-	public void update(Polygon object, int index) {
-		sprites.set(index, object);		
+	public static void update(VertexMatrix vertices, int index) {
+		sprites.get(index).update(vertices);
 	}
 
-	@Override
-	public void render() {
+	public static void render() {
 		for(int index = 0; index < sprites.size(); index++){
 			sprites.get(index).render();
 		}
 	}
 
-	@Override
-	public void dispose() {
+	public static void dispose() {
 		for(int index = 0; index < sprites.size(); index++){
 			sprites.get(index).dispose();
 		}
 	}
-
-
 }

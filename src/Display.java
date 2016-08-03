@@ -38,23 +38,29 @@ public class Display {
 	// Window handler for GLFW
 	private long windowID;
 	
-	private SpriteManager spriteManager;
 	/*
 	 * Initializes GLFW and setups all window/GLFW properties
 	 */
 	public Display(int width, int height, String title) {
 		init(width, height, title);
-		spriteManager = new SpriteManager();
-		VertexMatrix vertices = new VertexMatrix(4);
-		PositionMatrix positions = new PositionMatrix(4);
-		positions.setTest();
-		vertices.setPosition(positions);
-		Polygon quad = new Quadrilateral();
+		Actor dude = new Actor();
+		Actor dude2 = new Actor();
+		VertexMatrix vertices = new VertexMatrix(dude.getNumSides());
+		vertices.setPosition(dude.getPositionMatrix());
 		vertices.setColor(Color.red());
-		quad.update(vertices);
 		vertices.toArray();
-		int spriteID = spriteManager.newSprite(quad);
-		spriteManager.update(quad, spriteID);
+		dude.setVertexMatrix(vertices);
+		ActorManager.initialize();
+		SpriteManager.initialize();
+		ActorManager.addActor(dude);
+		ActorManager.update(dude.getIndex());
+		
+		vertices.setPosition(dude2.getPositionMatrix());
+		vertices.setColor(Color.red());
+		vertices.toArray();
+		dude.setVertexMatrix(vertices);
+		ActorManager.addActor(dude2);
+		//ActorManager.update(dude2.getIndex());
 		loop();
 		
 	}
@@ -65,7 +71,7 @@ public class Display {
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
-			spriteManager.render();
+			SpriteManager.render();
 			
 			glfwPollEvents();
 			glfwSwapBuffers(windowID);
@@ -75,7 +81,7 @@ public class Display {
 	}
 
 	public void terminate() {
-		spriteManager.dispose();
+		SpriteManager.dispose();
 		glfwDestroyWindow(windowID);
 		glfwTerminate();
 	}

@@ -29,7 +29,7 @@ public class VertexMatrix {
 		float [] vertices = new float[vertexAmount * vertexSize ];
 		int index = 0;
 
-		System.out.println(vertexList.get(0).getPosition().getX());
+		//System.out.println(vertexList.get(0).getPosition().getX());
 		for(Vertex vertex : vertexList){
 
 			for(float data : vertex.toArray()){
@@ -65,7 +65,7 @@ public class VertexMatrix {
 	public void setPosition(PositionMatrix positions){
 		for(int index = 0; index < vertexAmount; index++){
 			Position inputPos = positions.getPosition(index);
-			System.out.println(index + ", " + inputPos.getX() + ", " + inputPos.getY() + ", " );
+			//System.out.println(index + ", " + inputPos.getX() + ", " + inputPos.getY() + ", " );
 			vertexList.get(index).setPosition(inputPos);
 			//System.out.print(vertexList.get(index).getPosition().getX());
 		}
