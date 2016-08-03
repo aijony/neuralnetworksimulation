@@ -3,9 +3,6 @@ public class ActorManager {
 	private static ArrayList<Actor> actors;
 	private static int count;
 	
-	public ActorManager(){
-		
-	}
 	public static void initialize(){
 		actors = new ArrayList<Actor>();
 		count = 0;
@@ -18,5 +15,8 @@ public class ActorManager {
 	public static void update(int index){
 		actors.get(index).getVertexMatrix().setPosition(actors.get(index).getPositionMatrix());
 		SpriteManager.update(actors.get(index).getVertexMatrix(), index);
+	}
+	public static Actor getActor(int index){
+		return actors.get(index);
 	}
 }

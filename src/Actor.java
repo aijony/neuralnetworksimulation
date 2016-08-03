@@ -1,4 +1,5 @@
 
+
 public class Actor {
 	private Point position;		//current position on x/y plane
 	private double orientation;	//angle unit is facing (0-2PI)
@@ -8,22 +9,22 @@ public class Actor {
 	private int numSides;		//number of sides of this polygon
 	private PositionMatrix positions;
 	private VertexMatrix vertices;
-	private Polygon visual;
 	private int index;
 	
 	
 	public Actor(){
+		
 		position = randomPoint(-1, -1, 1, 1);
 		orientation = Math.random() * Math.PI / 2;
-		speed = .01;
+		speed = .05;
 		name = "Default name";
 		size = .15;
 		numSides = 4;
 		positions = new PositionMatrix(numSides);
 		findPositions();
-		visual = new Polygon(numSides);
 	}
 	public Actor(Point l, double o, double sp, String n, double si, int nS){
+		
 		position = l;
 		orientation = o;
 		speed = sp;
@@ -32,7 +33,9 @@ public class Actor {
 		numSides = nS;
 		positions = new PositionMatrix(numSides);
 		findPositions();
-		visual = new Polygon(numSides);
+	}
+	public Actor(Point l, double o, String n){
+		this(l, o, .05, n, .15, 4);
 	}
 	public void setPos(Point p){	position = p;	}
 	public Point getPos(){	return position;}
@@ -80,12 +83,13 @@ public class Actor {
 			xDiff -= xMove;
 			yDiff -= yMove;
 			
-			System.out.println("Location: " + getPos() + " Goal: " + newPoint);
+			//System.out.println("Location: " + getPos() + " Goal: " + newPoint);
 			
 			distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
 			if (distance <= .00001)
 				setPos(newPoint);
 			findPositions();
+			
 		}
 	}	
 	/*
@@ -94,6 +98,7 @@ public class Actor {
 	 */
 	private void stepTo(double xMove, double yMove){
 		setPos(new Point(((double)getPos().getX() + xMove), ((double)getPos().getY() + yMove)));
+		
 	}
 	/*
 	 * @brief	returns proper angle as it relates to its quadrant in the unit circle
@@ -126,7 +131,7 @@ public class Actor {
 	}
 	public void initializeMovement(){
 		Point targetPoint = randomPoint(-1, -1, 1, 1);
-		System.out.println(getName() + " is moving from " + getPos() + " to " + targetPoint);
+		//System.out.println(getName() + " is moving from " + getPos() + " to " + targetPoint);
 		moveTo(targetPoint);
 	}
 }

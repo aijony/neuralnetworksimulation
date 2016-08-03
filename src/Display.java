@@ -32,16 +32,15 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-
 public class Display {
 
 	// Window handler for GLFW
 	private long windowID;
-	
 	/*
 	 * Initializes GLFW and setups all window/GLFW properties
 	 */
 	public Display(int width, int height, String title) {
+		
 		init(width, height, title);
 		Actor dude = new Actor();
 		Actor dude2 = new Actor();
@@ -53,14 +52,14 @@ public class Display {
 		ActorManager.initialize();
 		SpriteManager.initialize();
 		ActorManager.addActor(dude);
-		ActorManager.update(dude.getIndex());
 		
-		vertices.setPosition(dude2.getPositionMatrix());
-		vertices.setColor(Color.red());
-		vertices.toArray();
-		dude.setVertexMatrix(vertices);
-		ActorManager.addActor(dude2);
-		//ActorManager.update(dude2.getIndex());
+		
+//		vertices.setPosition(dude2.getPositionMatrix());
+//		vertices.setColor(Color.red());
+//		vertices.toArray();
+//		dude2.setVertexMatrix(vertices);
+//		ActorManager.addActor(dude2);
+//		ActorManager.update(dude2.getIndex());
 		loop();
 		
 	}
@@ -68,16 +67,30 @@ public class Display {
 	public void loop() {
 
 		while (glfwWindowShouldClose(windowID) == false) {
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			refresh();
 			
-			SpriteManager.render();
 			
-			glfwPollEvents();
-			glfwSwapBuffers(windowID);
-
 		}
 		terminate();
+	}
+	
+	public void refresh(){
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			ActorManager.getActor(0).initializeMovement();
+			//ActorManager.getActor(1).initializeMovement();
+			ActorManager.update(0);
+			//ActorManager.update(1);
+			SpriteManager.render();
+			glfwPollEvents();
+			glfwSwapBuffers(windowID);
 	}
 
 	public void terminate() {
