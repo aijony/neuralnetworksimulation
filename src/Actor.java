@@ -1,4 +1,4 @@
-
+import java.util.concurrent.CountDownLatch;
 
 public class Actor {
 	private Point position;		//current position on x/y plane
@@ -10,7 +10,13 @@ public class Actor {
 	private PositionMatrix positions;
 	private VertexMatrix vertices;
 	private int index;
+	private Point targetPoint;
+	public double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
 	
+	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
+	
+	
+	CountDownLatch waitUpdate = new CountDownLatch(1);
 	
 	public Actor(){
 		
@@ -21,6 +27,7 @@ public class Actor {
 		size = .15;
 		numSides = 4;
 		positions = new PositionMatrix(numSides);
+		vertices = new VertexMatrix(numSides);
 		findPositions();
 	}
 	public Actor(Point l, double o, double sp, String n, double si, int nS){
@@ -49,27 +56,23 @@ public class Actor {
 	public int getNumSides(){return numSides;}
 	public void setIndex(int i){index = i;}
 	public int getIndex(){return index;}
-	/*
-	 * @brief 	Moves this unit incrementally based on field 'speed' to newPoint
-	 * @param	newPoint: the target destination for position
-	 * @returns	void
-	 */
+	public boolean isReady() {return ready;}
+	public void setReady(boolean ready) {this.ready = ready;}
+	
+	
 	private void findPositions(){
 		double angleOffset = Math.PI / numSides;
 		for (int x = 0; x <= numSides - 1; x++){
 			positions.getPosition(x).set((float)(size * Math.cos(orientation + ((1 + 2 * x) * angleOffset) )+ getPos().getX()), (float)(size * Math.sin(orientation + ((1 + 2 * x) * angleOffset) )+ getPos().getY()));
 		}
+		vertices.setPosition(positions);
 	}
-	public void moveTo(Point newPoint){
-		double xDiff = newPoint.getX() - getPos().getX();	//remaining difference between current and goal x
-		double yDiff = newPoint.getY() - getPos().getY();	//remaining difference between current and goal y
-		
-		double xMove; double yMove;		//delta x and y per step; hypotenuse of triangle formed
-										//will be speed of unit
-		
-		double distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
-		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
-		while (!newPoint.equals(getPos())){
+	
+	/*
+	 * @brief 	Moves this unit incrementally based on field 'speed' to newPoint
+	 */
+	public void moveTo(){
+			
 			if (distance >= getSpeed()){
 				xMove = getSpeed()*Math.cos(getOrientation());
 				yMove = getSpeed()*Math.sin(getOrientation());
@@ -90,10 +93,12 @@ public class Actor {
 			
 			distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
 			if (distance <= .00001)
-				setPos(newPoint);
+				setPos(targetPoint);
+
 			findPositions();
 			
-		}
+			setReady(targetPoint.equals(getPos()));
+		
 	}	
 	/*
 	 * @brief	single increment for moveTo
@@ -132,9 +137,37 @@ public class Actor {
 	public Point randomPoint(double xMin, double yMin, double xMax, double yMax){
 		return new Point((Math.random() * (xMax - xMin)) + xMin, (Math.random() * (yMax - yMin)) + yMin);
 	}
-	public void initializeMovement(){
-		Point targetPoint = randomPoint(-1, -1, 1, 1);
-		//System.out.println(getName() + " is moving from " + getPos() + " to " + targetPoint);
-		moveTo(targetPoint);
+	
+	public void update(){
+		if(isReady()){
+			initializeMovement();
+			System.out.println("skt");
+		}
+		else{
+			setReady(false);
+			moveTo();
+		}
+			
+			
 	}
+	public void initializeMovement(){
+
+		
+		Point newPoint = randomPoint(-1, -1, 1, 1);
+		//System.out.println(getName() + " is moving from " + getPos() + " to " + targetPoint);
+		targetPoint = newPoint;
+
+		xDiff = targetPoint.getX() - getPos().getX();	//remaining difference between current and goal x
+		yDiff = targetPoint.getY() - getPos().getY();	//remaining difference between current and goal y
+		
+		xMove = 0;  yMove = 0;		//delta x and y per step; hypotenuse of triangle formed
+										//will be speed of unit
+		
+		distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
+		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
+	
+		moveTo();
+	}
+	
+	
 }
