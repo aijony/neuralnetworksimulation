@@ -1,3 +1,4 @@
+package neuralnetwork;
 
 import java.util.*;
  
@@ -37,6 +38,7 @@ public class NeuralNetwork {
     
     public static void main(String[] args) {
        
+    	//NPL is neurons per layer
         ArrayList<Integer> NPL = new ArrayList<Integer>();
         NPL.add(2);
         NPL.add(5);

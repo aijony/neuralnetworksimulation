@@ -1,3 +1,4 @@
+package neuralnetwork;
 import java.util.*;
  
 public class Neuron {   

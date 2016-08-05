@@ -1,3 +1,4 @@
+package neuralnetwork;
 public class Connection {
     double weight = 0;
     double prevDeltaWeight = 0; // for momentum
