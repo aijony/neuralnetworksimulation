@@ -51,7 +51,9 @@ public class Display {
 		
 		ActorManager.initialize();
 		SpriteManager.initialize();
-		ActorManager.addActor(Color.red());
+		ActorManager.addActor(Color.red(), "Unit", 0);
+		ActorManager.addActor(Color.green(), "Unit", 0);
+		//ActorManager.addActor(Color.blue(), "Unit", 0);
 		
 		loop();
 		
@@ -70,7 +72,7 @@ public class Display {
 			
 			
 			
-			ActorManager.update(0);
+			ActorManager.updateAll();
 			SpriteManager.render();
 			glfwPollEvents();
 			glfwSwapBuffers(windowID);

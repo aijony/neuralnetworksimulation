@@ -13,9 +13,9 @@ public class Actor {
 	private int numSides;		//number of sides of this polygon
 	private PositionMatrix positions;
 	private VertexMatrix vertices;
-	private int index;
 	private Point targetPoint;
-	public double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
+	private int index;
+	protected double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
 	
 	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
 	
@@ -23,8 +23,7 @@ public class Actor {
 	CountDownLatch waitUpdate = new CountDownLatch(1);
 	
 	public Actor(){
-		
-		position = randomPoint(-1, -1, 1, 1);
+		position = Point.randomPoint(-1, -1, 1, 1);
 		orientation = Math.random() * Math.PI / 2;
 		speed = .05;
 		name = "Default name";
@@ -43,6 +42,7 @@ public class Actor {
 		size = si;
 		numSides = nS;
 		positions = new PositionMatrix(numSides);
+		vertices = new VertexMatrix(numSides);
 		findPositions();
 	}
 	public Actor(Point l, double o, String n){
@@ -52,21 +52,22 @@ public class Actor {
 	public Point getPos(){	return position;}
 	public double getSpeed(){	return speed;}
 	public String getName(){return name;}
+	protected void setName(String n){name = n;}
 	public double getOrientation(){return orientation;}
 	public void setOrientation(double newO){ orientation = newO;}
 	public PositionMatrix getPositionMatrix(){return positions;}
 	public VertexMatrix getVertexMatrix(){return vertices;}
 	public void setVertexMatrix(VertexMatrix newMatrix){vertices = newMatrix;}
 	public int getNumSides(){return numSides;}
-	public void setIndex(int i){index = i;}
-	public int getIndex(){return index;}
 	public boolean isReady() {return ready;}
 	public void setReady(boolean ready) {this.ready = ready;}
+	public int getIndex(){return index;}
+	public void setIndex(int value){index = value;}
 	
 	
-	private void findPositions(){
+	protected void findPositions(){
 		double angleOffset = Math.PI / numSides;
-		for (int x = 0; x <= numSides - 1; x++){
+		for (int x = 0; x < numSides; x++){
 			positions.getPosition(x).set((float)(size * Math.cos(orientation + ((1 + 2 * x) * angleOffset) )+ getPos().getX()), (float)(size * Math.sin(orientation + ((1 + 2 * x) * angleOffset) )+ getPos().getY()));
 		}
 		vertices.setPosition(positions);
@@ -108,7 +109,7 @@ public class Actor {
 	 * @brief	single increment for moveTo
 	 * @param	xMove and yMove: values for delta x and delta y
 	 */
-	private void stepTo(double xMove, double yMove){
+	protected void stepTo(double xMove, double yMove){
 		setPos(new Point(((double)getPos().getX() + xMove), ((double)getPos().getY() + yMove)));
 		
 	}
@@ -138,13 +139,11 @@ public class Actor {
 	/*
 	 * @brief	returns random x/y coordinate between self-documenting parameters
 	 */
-	public Point randomPoint(double xMin, double yMin, double xMax, double yMax){
-		return new Point((Math.random() * (xMax - xMin)) + xMin, (Math.random() * (yMax - yMin)) + yMin);
-	}
+	
 	
 	public void update(){
 		if(isReady()){
-			initializeMovement();
+			initializeMovement(Point.randomPoint(-1, -1, 1, 1));
 		}
 		else{
 			moveTo();
@@ -152,24 +151,21 @@ public class Actor {
 			
 			
 	}
-	public void initializeMovement(){
-
-		
-		Point newPoint = randomPoint(-1, -1, 1, 1);
-		//System.out.println(getName() + " is moving from " + getPos() + " to " + targetPoint);
+	
+	public void initializeMovement(Point newPoint){
 		targetPoint = newPoint;
 
 		xDiff = targetPoint.getX() - getPos().getX();	//remaining difference between current and goal x
 		yDiff = targetPoint.getY() - getPos().getY();	//remaining difference between current and goal y
 		
 		xMove = 0;  yMove = 0;		//delta x and y per step; hypotenuse of triangle formed
-										//will be speed of unit
+									//will be speed of unit
 		
 		distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
 		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
 	
 		moveTo();
 	}
-	
-	
+	public boolean isProjectile(){return false;}
+	public boolean outOfBounds(){return false;}
 }

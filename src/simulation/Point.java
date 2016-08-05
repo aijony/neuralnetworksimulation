@@ -31,4 +31,7 @@ public class Point {
 	public boolean equals(Point compare){
 		return (getX() == compare.getX() && getY() == compare.getY());
 	}
+	public static Point randomPoint(double xMin, double yMin, double xMax, double yMax){
+		return new Point((Math.random() * (xMax - xMin)) + xMin, (Math.random() * (yMax - yMin)) + yMin);
+	}
 }
