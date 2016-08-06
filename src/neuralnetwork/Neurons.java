@@ -2,74 +2,39 @@ package neuralnetwork;
 import java.util.*;
  
 public class Neurons {   
-    static int counter = 0;
-    final public int id;  // auto increment, starts at 0
-    Connection biasConnection;
-    final double bias = -1;
-    double output;
+	
+	/*
+	The element of the array list is a double "matrix" of neurons per layer
+	Field is public to improve propagation speed by about 60% per n
+	This is roughly 17 nanoseconds per n on a 4690k base clock CPU
+	This optimization is insignificant but noted to prove a point
+	Though these sort of optimizations that fight OOP will not continue
+	To appear since it would just be easier to program it in a different language
+	And it would make the code unreadable
+	 */
+	public ArrayList<double [][]> values;
+    final double bias = 1;
      
-    ArrayList<Connection> Inconnections = new ArrayList<Connection>();
-    HashMap<Integer,Connection> connectionLookup = new HashMap<Integer,Connection>();
-     
-    public Neurons(){        
-        id = counter;
-        counter++;
-    }
-     
-    /**
-     * Compute Sj = Wij*Aij + w0j*bias
-     */
-    public void calculateOutput(){
-        double s = 0;
-        for(Connection con : Inconnections){
-            Neurons leftNeuron = con.getFromNeuron();
-            double weight = con.getWeight();
-            double a = leftNeuron.getOutput(); //output from previous layer
-             
-            s = s + (weight*a);
-        }
-        s = s + (biasConnection.getWeight()*bias);
-         
-        output = sigmoid(s);
-    }
-     
-     
+    private int [] neuronsPerLayer;
+    
+    public Neurons(int [] neuronsPerLayerInput) {
+ 		neuronsPerLayer = neuronsPerLayerInput;
+     	values = new ArrayList<double [][] >(neuronsPerLayer.length);
 
-    double sigmoid(double x) {
-        return 1.0 / (1.0 +  (Math.exp(-x)));
-    }
+     	
+ 		//Loops through setting the weights in between the inputs and the output.
+ 		for (int currentLayer = 0; currentLayer < neuronsPerLayer.length; currentLayer++) {
+ 			values.add(currentLayer, new double[1][neuronsPerLayer[currentLayer]]);
+ 		}
+     }
+    
+    
+     public void setInput(double [][] input){
+    	 values.set(0, input);
+     }
      
-    public void addInConnectionsS(ArrayList<Neuron> inNeurons){
-        for(Neurons n: inNeurons){
-            Connection con = new Connection(n,this);
-            Inconnections.add(con);
-            connectionLookup.put(n.id, con);
-        }
-    }
-     
-    public Connection getConnection(int neuronIndex){
-        return connectionLookup.get(neuronIndex);
-    }
- 
-    public void addInConnection(Connection con){
-        Inconnections.add(con);
-    }
-    public void addBiasConnection(Neuron n){
-        Connection con = new Connection(n,this);
-        biasConnection = con;
-        Inconnections.add(con);
-    }
-    public ArrayList<Connection> getAllInConnections(){
-        return Inconnections;
-    }
-     
-    public double getBias() {
-        return bias;
-    }
-    public double getOutput() {
-        return output;
-    }
-    public void setOutput(double o){
-        output = o;
-    }
+     public double[] getOutput(){
+    	 return values.get(values.size() - 1)[0];
+     }
+   
 }
