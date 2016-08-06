@@ -3,6 +3,8 @@ package neuralnetwork;
 import java.util.*;
  
 public class NeuralNetwork {
+	
+	
 
     final boolean isTrained = false;
     final Random rand = new Random();
@@ -38,35 +40,33 @@ public class NeuralNetwork {
     
     public static void main(String[] args) {
        
-    	//NPL is neurons per layer
-        ArrayList<Integer> NPL = new ArrayList<Integer>();
-        NPL.add(2);
-        NPL.add(5);
-        NPL.add(1);
-    	
-    	NeuralNetwork nn = new NeuralNetwork(NPL);
- 
-        int maxRuns = 500000;
-        double minErrorCondition = 0.0001;
+       //NPL is neurons per layer
+        int neuronsPerLayer [] = {2, 5, 1};
+       
+        
+        
+    	NeuralNetwork nn = new NeuralNetwork(neuronsPerLayer);
+
+        int maxRuns = 50000;
+        double minErrorCondition = 0.001;
         nn.run(maxRuns, minErrorCondition);
     }
  
-    public NeuralNetwork( ArrayList<Integer> neuronsPerLayer) {
+    public NeuralNetwork( int [] neuronsPerLayer) {
 
 		// adds the correct number of layers to the neural network
-		for (int currentLayer = 0; currentLayer < neuronsPerLayer.size(); currentLayer++) {
+		for (int currentLayer = 0; currentLayer < neuronsPerLayer.length; currentLayer++) {
 			neuralNetwork.add(new ArrayList<Neuron>());
 		}
 
 		// adds the correct number of neurons to each layer of the neural
 		// network
-		for (int currentLayer = 0; currentLayer < neuronsPerLayer.size(); currentLayer++) {
-			for (int currentNeuron = 0; currentNeuron < neuronsPerLayer.get(currentLayer); currentNeuron++) {
+		for (int currentLayer = 0; currentLayer < neuronsPerLayer.length; currentLayer++) {
+			for (int currentNeuron = 0; currentNeuron < neuronsPerLayer[currentLayer]; currentNeuron++) {
 				
 				//if we are in the first layer numberInputs applies
 				if(currentLayer == 0){
 				getNeuralNetworkLayer(currentLayer).add(new Neuron());
-
 				}
 				
 				//if we are not in the first layer the number of inputs = the size of the previous layer
