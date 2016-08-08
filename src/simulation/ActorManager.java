@@ -31,8 +31,9 @@ public class ActorManager {
 		newActor.setVertexMatrix(vertices);
 		newActor.initializeMovement(Point.randomPoint(new RangeSet()));
 		newActor.setIndex(count);
-		SpriteManager.newSprite();
-		actors.add(count++, newActor);
+		actors.add(SpriteManager.newSprite(), newActor);
+		
+		count++;
 		
 	}
 	
@@ -44,8 +45,6 @@ public class ActorManager {
 				System.out.println("Projectile " + index + " hit its target");
 			actors.remove(index);
 			SpriteManager.dispose(index);
-			//updateIndices(index);
-			//System.out.println("Removing item of index " + index + " from ActorManager");
 			count--;
 		}
 	}
@@ -59,6 +58,4 @@ public class ActorManager {
 	public static Actor getActor(int index){
 		return actors.get(index);
 	}
-	
-	
 }

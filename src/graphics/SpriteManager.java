@@ -31,7 +31,7 @@ public class SpriteManager{
 			sprites.get(index).render();
 		}
 	}
-
+	
 	public static void disposeAll() {
 		for(int index = 0; index < sprites.size(); index++){
 			dispose(index);
@@ -39,5 +39,7 @@ public class SpriteManager{
 	}
 	public static void dispose(int index){
 		sprites.get(index).dispose();
+		sprites.remove(index);
+		count--;
 	}
 }
