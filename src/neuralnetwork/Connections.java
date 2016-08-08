@@ -44,7 +44,7 @@ public class Connections {
     /*
      * @brief returns a set of random weights per layer
     */
-    private double[] []randomizeWeights(int x, int y) {
+    double[] []randomizeWeights(int x, int y) {
 		double[][] output = new double[x] [y];
     	for(int indexX = 0; indexX < x; indexX++){
     		for(int indexY = 0; indexY < y; indexY++){	

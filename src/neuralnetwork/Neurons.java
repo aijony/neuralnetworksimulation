@@ -18,15 +18,16 @@ public class Neurons {
     private int [] neuronsPerLayer;
     
     public Neurons(int [] neuronsPerLayerInput) {
- 		neuronsPerLayer = neuronsPerLayerInput;
-     	values = new ArrayList<double [][] >(neuronsPerLayer.length);
-
+ 		setNeuronsPerLayer(neuronsPerLayerInput);
+     	values = new ArrayList<double [][] >(getNeuronsPerLayer().length);
      	
  		//Loops through setting the weights in between the inputs and the output.
- 		for (int currentLayer = 0; currentLayer < neuronsPerLayer.length; currentLayer++) {
- 			values.add(currentLayer, new double[1][neuronsPerLayer[currentLayer]]);
+ 		for (int currentLayer = 0; currentLayer < getNeuronsPerLayer().length; currentLayer++) {
+ 			values.add(currentLayer, new double[1][getNeuronsPerLayer()[currentLayer]]);
  		}
      }
+    
+    
     
     
      public void setInput(double [][] input){
@@ -36,5 +37,19 @@ public class Neurons {
      public double[] getOutput(){
     	 return values.get(values.size() - 1)[0];
      }
+
+
+
+
+	public int [] getNeuronsPerLayer() {
+		return neuronsPerLayer;
+	}
+
+
+
+
+	public void setNeuronsPerLayer(int [] neuronsPerLayer) {
+		this.neuronsPerLayer = neuronsPerLayer;
+	}
    
 }

@@ -29,7 +29,7 @@ public class NeurolNetworkManager {
 		        
 		        double output = network.forwardPropagate(inputs[1], expectedOutputs[0])[0];
 		        
-		        System.out.println(output);
+		        //System.out.println(output);
 		    }
 		 
 	}

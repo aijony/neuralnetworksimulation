@@ -24,17 +24,18 @@ public class NeuralNetwork {
 		neuronsPerLayer = npl;
 		connections = new Connections(neuronsPerLayer);
 		neurons = new Neurons(neuronsPerLayer);
-    	propagation = new Propagation(neurons, connections);
+    	propagation = new Propagation(neurons, connections, neuronsPerLayer);
 	}	
 		
 
-    public double [] forwardPropagate(double [] input, double []expected){
+    public double [] forwardPropagate(double [] input, double [] expected){
     	
     	if(neuronsPerLayer[0] == input.length
     		&& neuronsPerLayer[neuronsPerLayer.length - 1]
     		== expected.length)
     	{
     		propagation.forward(input);
+    		propagation.backward(expected).weights.get(0);
     		return propagation.output()[0];		
     	}
     	else{

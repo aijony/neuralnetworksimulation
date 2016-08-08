@@ -22,7 +22,14 @@ public class Test {
 		double [][] operand = {{1}, {2}};
 		
 
-		double [][] product =  MatrixMath.multiply(operator, operand);
+		double [][] product =  MatrixMath.subtract(operand, operand);
+		for(int i = 0; i < product[0].length; i++){
+			for(int j = 0; j < product.length; j++){
+			System.out.print(product[j][i] + " ");
+			}
+			System.out.println();
+		}
+		product =  MatrixMath.transpose(product);
 		for(int i = 0; i < product[0].length; i++){
 			for(int j = 0; j < product.length; j++){
 			System.out.print(product[j][i] + " ");
