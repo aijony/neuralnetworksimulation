@@ -19,23 +19,17 @@ public class Test {
 		 1
 		}};
 		
-		double [][] operand = {{1}, {2}};
-		
+		double [][] operand = {{1, 1}, {2, 3}};
+		double [][] operandTwo = {{2, 1}, {21, 1}};
 
-		double [][] product =  MatrixMath.subtract(operand, operand);
+		double [][] product =  MatrixMath.subtract(operand, operandTwo);
 		for(int i = 0; i < product[0].length; i++){
 			for(int j = 0; j < product.length; j++){
 			System.out.print(product[j][i] + " ");
 			}
 			System.out.println();
 		}
-		product =  MatrixMath.transpose(product);
-		for(int i = 0; i < product[0].length; i++){
-			for(int j = 0; j < product.length; j++){
-			System.out.print(product[j][i] + " ");
-			}
-			System.out.println();
-		}
+		
 		
 	}
 

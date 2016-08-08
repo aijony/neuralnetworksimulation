@@ -43,51 +43,56 @@ public class MatrixMath {
 	
 	public static double [][] sigmoid(double [][] input){
 	
-		for(int x = 0; x < input.length; x++){
-			for(int y = 0; y < input[0].length; y++){
-				input[x][y]  = 1.0 / (1.0 +  (Math.exp(-input[x][y])));;
+		int lengthX = input.length;
+		int lengthY = input[0].length;
+		double [][] output = new double[lengthX][lengthY];
+		for(int x = 0; x < lengthX; x++){
+			for(int y = 0; y < lengthY; y++){
+				output[x][y]  = 1.0 / (1.0 +  (Math.exp(-input[x][y])));;
 			}
 		}
-		return input;
+		return output;
 		
 	}
 	
 
 	public static double [][] sigmoidPrime(double [][] input){
-	
-		for(int x = 0; x < input.length; x++){
-			for(int y = 0; y < input[0].length; y++){
-				input[x][y]  = sigmoidPrime(input[x][y]);
+		int lengthX = input.length;
+		int lengthY = input[0].length;
+		double [][] output = new double[lengthX][lengthY];
+		for(int x = 0; x < lengthX; x++){
+			for(int y = 0; y < lengthY; y++){
+				output[x][y]= sigmoidPrime(input[x][y]);
 			}
 		}
-		return input;
+		return output;
 	}
 	
 	
 	
 	public static double [][] multiply(double [][] operator, double scaler){
-		for(int x = 0; x < operator.length; x++){
-			for(int y = 0; y < operator[0].length; y++){
-				operator[x][y] *= scaler;
+		int lengthX = operator.length;
+		int lengthY = operator[0].length;
+		double [][] output = new double[lengthX][lengthY];
+		for(int x = 0; x < lengthX; x++){
+			for(int y = 0; y < lengthY; y++){
+				output[x][y] = operator[x][y] * scaler;
 			}
 		}
-		return operator;
+		return output;
 	}
 	
 	public static double [][] subtract(double [][] operator, double [][]operand){
 		int lengthX = operator.length;
 		int lengthY = operator[0].length;
-	
-		/*if(lengthX != operand.length || lengthY != operand[0].length){	
-			return null;		
-		}	*/
+		double [][] output = new double[lengthX][lengthY];
 			
 		for(int x = 0; x < lengthX; x++){
 			for(int y = 0; y < lengthY; y++){
-				operator[x][y] -= operand[x][y];
+				output[x][y] = operator[x][y] - operand[x][y];
 			}
 		}
-		return operator;
+		return output;
 	}
 	
 	public static double [][] rowToMatrix(double [] in) {
@@ -101,6 +106,14 @@ public class MatrixMath {
 
 	public static double sigmoidPrime(double input) {
 		return (Math.exp(input)) / Math.pow((1.0  +  (Math.exp(input))), 2);
+	}
+	
+	public static double[][] columnToMatrix(double[] in) {
+		double[][] columnToMatrix = new double [in.length][1];
+    	for(int index = 0; index < in.length; index++){
+    		columnToMatrix[index][0] = in[index];
+    	}
+		return columnToMatrix;
 	}
 
 

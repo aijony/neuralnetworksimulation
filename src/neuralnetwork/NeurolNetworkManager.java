@@ -28,8 +28,8 @@ public class NeurolNetworkManager {
 		        double minErrorCondition = 0.001;
 		        
 		        double output = network.forwardPropagate(inputs[1], expectedOutputs[0])[0];
-		        
-		        //System.out.println(output);
+		        System.out.println(output);
+		        System.out.println(network.calculateCost(expectedOutputs[0]));
 		    }
 		 
 	}
