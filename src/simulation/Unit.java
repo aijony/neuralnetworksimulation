@@ -5,18 +5,21 @@ import graphics.Color;
 public class Unit extends Actor {
 	
 	
-	private int damage;			//health of target depleted on "attack"
-	private int health;			//amount of damage unit can take before target wins
-	
+	private boolean canFire;
 	
 	
 	private int targetUnitIndex;	//opponent unit
 	
-	public Unit(){
+	public Unit(int count){
 		super();
-		damage = 10;
-		health = 100;
 		setName("Unit " + getIndex());
+		setIndex(count);
+		canFire = true;
+		if (getIndex() == 0)
+			targetUnitIndex = 1;
+		else
+			targetUnitIndex = 0;
+		System.out.println("TargetUnitIndex of unit " + getIndex() + " is " + targetUnitIndex);
 	}
 	
 	/*
@@ -25,13 +28,9 @@ public class Unit extends Actor {
 	public Unit(int d, int h, double s, int c, String n, Point p) 
 	{
 		super(p, 0, s, n, .05, 4);
-		damage = d; health = h; 
+		canFire = true;
 	}
 	
-	//public int getRange(){	return range;}
-	public int getDamage(){	return damage;}
-	public int getHealth(){	return health;}
-	public int decreaseHealth(int amount){	health -= amount;	return health;}
 	public int getTargetUnitIndex(){return targetUnitIndex;}
 	
 	
@@ -48,13 +47,16 @@ public class Unit extends Actor {
 
 	public void update(){
 
-		System.out.println(ActorManager.getActor(getIndex()).getName() + " just updated");
+		//System.out.println(ActorManager.getActor(getIndex()).getName() + " just updated");
 		if(isReady()){
-			if ((int)(Math.random() * 2) == 0)
-				initializeMovement(Point.randomPoint(-1, -1, 1, 1));
-			else {
-				fire(Point.randomPoint(-1, -1, 1, 1));
-				System.out.println("Unit is firing");
+			if ((int)(Math.random() * 2) == 0){
+				initializeMovement(Point.randomPoint(new RangeSet()));
+				canFire = true;
+			}
+			else if (canFire){
+				fire(Point.randomPoint(new RangeSet()));
+				System.out.println("Unit " + getIndex() + " is firing");
+				canFire = false;
 			}
 		}
 		else{
@@ -66,6 +68,7 @@ public class Unit extends Actor {
 	
 	public boolean isProjectile(){return false;}
 	public boolean outOfBounds(){return false;}
+	public boolean collision(){return false;}
 	
 	
 	

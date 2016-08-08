@@ -32,9 +32,12 @@ public class SpriteManager{
 		}
 	}
 
-	public static void dispose() {
+	public static void disposeAll() {
 		for(int index = 0; index < sprites.size(); index++){
-			sprites.get(index).dispose();
+			dispose(index);
 		}
+	}
+	public static void dispose(int index){
+		sprites.get(index).dispose();
 	}
 }

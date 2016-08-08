@@ -62,24 +62,33 @@ public class Display {
 	public void loop() {
 
 		while (glfwWindowShouldClose(windowID) == false) {
-			refresh();	
+			refresh();
+//			try {
+//				Thread.sleep(1);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		terminate();
 	}
 	
 	public void refresh(){
+		
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			
 			
 			ActorManager.updateAll();
 			SpriteManager.render();
-			glfwPollEvents();
+			
 			glfwSwapBuffers(windowID);
+			glfwPollEvents();
 	}
 
 	public void terminate() {
-		SpriteManager.dispose();
+		SpriteManager.disposeAll();
 		glfwDestroyWindow(windowID);
 		glfwTerminate();
 	}

@@ -17,23 +17,20 @@ public class ActorManager {
 		Actor newActor;
 		switch (type){
 		case "Unit":
-			newActor = new Unit();
-			newActor.setIndex(count);
+			newActor = new Unit(count);
 			break;
 		case "Projectile":
 			newActor = new Projectile((Unit) actors.get(originUnit));
-			newActor.setIndex(count);
 			break;
 		default:
 			newActor = new Actor();
-			newActor.setIndex(count);
 		}
 		VertexMatrix vertices = new VertexMatrix(newActor.getNumSides());
 		vertices.setPosition(newActor.getPositionMatrix());
 		vertices.setColor(color);
 		newActor.setVertexMatrix(vertices);
+		newActor.initializeMovement(Point.randomPoint(new RangeSet()));
 		newActor.setIndex(count);
-		newActor.initializeMovement(Point.randomPoint(-1, -1, 1, 1));
 		SpriteManager.newSprite();
 		actors.add(count++, newActor);
 		
@@ -42,10 +39,13 @@ public class ActorManager {
 	public static void update(int index){
 		actors.get(index).update();
 		SpriteManager.update(actors.get(index).getVertexMatrix(), index);
-		if (actors.get(index).outOfBounds()){
+		if (actors.get(index).outOfBounds() || actors.get(index).collision()){
+			if (actors.get(index).collision())
+				System.out.println("Projectile " + index + " hit its target");
 			actors.remove(index);
-			updateIndices(index);
-			System.out.println("Removing item of index " + index + " from ActorManager");
+			SpriteManager.dispose(index);
+			//updateIndices(index);
+			//System.out.println("Removing item of index " + index + " from ActorManager");
 			count--;
 		}
 	}
@@ -60,12 +60,5 @@ public class ActorManager {
 		return actors.get(index);
 	}
 	
-	public static void updateIndices(int startPoint){
-		System.out.println("Calling updateIndices with startPoint " + startPoint);
-		for (int x = startPoint; x < actors.size(); x++){
-			System.out.println("index before update: " + actors.get(x).getIndex());
-			actors.get(x).setIndex(actors.get(x).getIndex() - 1);
-			System.out.println("index after update: " + actors.get(x).getIndex());
-		}
-	}
+	
 }

@@ -16,18 +16,17 @@ public class Actor {
 	private Point targetPoint;
 	private int index;
 	protected double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
-	
 	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
 	
 	
 	CountDownLatch waitUpdate = new CountDownLatch(1);
 	
 	public Actor(){
-		position = Point.randomPoint(-1, -1, 1, 1);
+		position = Point.randomPoint(new RangeSet());
 		orientation = Math.random() * Math.PI / 2;
-		speed = .05;
+		speed = .02;
 		name = "Default name";
-		size = .15;
+		size = .2;
 		numSides = 4;
 		positions = new PositionMatrix(numSides);
 		vertices = new VertexMatrix(numSides);
@@ -63,6 +62,7 @@ public class Actor {
 	public void setReady(boolean ready) {this.ready = ready;}
 	public int getIndex(){return index;}
 	public void setIndex(int value){index = value;}
+	public double getSize(){return size;}
 	
 	
 	protected void findPositions(){
@@ -117,7 +117,7 @@ public class Actor {
 	 * @brief	returns proper angle as it relates to its quadrant in the unit circle
 	 * 			necessary because Math basic trig functions only go from 0-2PI
 	 */
-	private double qualifyAngle(double angle, boolean xPositive, boolean yPositive){
+	protected double qualifyAngle(double angle, boolean xPositive, boolean yPositive){
 		if (xPositive && yPositive || !xPositive && yPositive)
 			return angle;
 		else
@@ -126,16 +126,10 @@ public class Actor {
 	/*
 	 * @brief	returns whether or not a double is positive
 	 */
-	private boolean isPositive(double number){
+	protected boolean isPositive(double number){
 		return (number >= 0);
 	}
-	/*
-	 * @brief	overloaded isPositive returns whether or not an int is positive
-	 */
-	@SuppressWarnings("unused")
-	private boolean isPositive(int number){
-		return (number >= 0);
-	}
+	
 	/*
 	 * @brief	returns random x/y coordinate between self-documenting parameters
 	 */
@@ -143,7 +137,7 @@ public class Actor {
 	
 	public void update(){
 		if(isReady()){
-			initializeMovement(Point.randomPoint(-1, -1, 1, 1));
+			initializeMovement(Point.randomPoint(new RangeSet()));
 		}
 		else{
 			moveTo();
@@ -168,4 +162,6 @@ public class Actor {
 	}
 	public boolean isProjectile(){return false;}
 	public boolean outOfBounds(){return false;}
+	public boolean collision(){return false;}
+	public void decreaseHealth(int amount){}
 }

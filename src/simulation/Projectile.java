@@ -1,23 +1,13 @@
 package simulation;
 
 public class Projectile extends Actor{
-	private int damage;
 	private int targetUnitIndex;
 	
 	public Projectile(Unit origin){
-		super(origin.getPos(), origin.getOrientation(), .1, "Projectile", .05, 4);
-		damage = origin.getDamage();
-		if (this.getOrientation() == origin.getOrientation()){
-			System.out.println("Projectile is facing the correct direction");
-//			try {
-//				Thread.sleep(200);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-		}
-		
+		super(origin.getPos(), origin.getOrientation(), .01, "Projectile", .01, 4);	
 		targetUnitIndex = origin.getTargetUnitIndex();
+		updateValues();
+		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
 		moveTo();
 	}
 	public void moveTo(){
@@ -26,16 +16,23 @@ public class Projectile extends Actor{
 		stepTo(xMove, yMove);
 		findPositions();
 		setReady(outOfBounds());
-		System.out.println("Projectile " + getIndex() + " is stepping");
+		//System.out.println("Projectile " + getIndex() + " is stepping");
 	}
 	public boolean outOfBounds(){
 		double x = getPos().getX();
 		double y = getPos().getY();
 		return (x > 1 || x < -1 || y > 1 || y < -1);
 	}
-//	public boolean collision(){
-//		xDiff = getPos() - actors.get(targetUnitIndex).
-//		if (actors.get(targetUnitIndex).getPos().
-//	}
+	private void updateValues(){
+		xDiff = getPos().getX() - ActorManager.getActor(targetUnitIndex).getPos().getX();
+		yDiff = getPos().getY() - ActorManager.getActor(targetUnitIndex).getPos().getY();
+		distance = Math.sqrt((Math.pow(xDiff, 2)) + Math.pow(yDiff, 2));
+	}
+	public boolean collision(){
+		updateValues();
+		return (distance < ActorManager.getActor(targetUnitIndex).getSize());
+
+	}
 	public boolean isProjectile(){return true;}
+	public void decreaseHealth(int amount){}
 }
