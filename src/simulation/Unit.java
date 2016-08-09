@@ -7,19 +7,16 @@ public class Unit extends Actor {
 	
 	private boolean canFire;
 	
-	
-	private int targetUnitIndex;	//opponent unit
-	
 	public Unit(int count){
 		super();
 		setName("Unit " + getIndex());
 		setIndex(count);
+		originUnitIndex = getIndex();
 		canFire = true;
 		if (getIndex() == 0)
 			targetUnitIndex = 1;
 		else
 			targetUnitIndex = 0;
-		System.out.println("TargetUnitIndex of unit " + getIndex() + " is " + targetUnitIndex);
 	}
 	
 	/*
@@ -49,13 +46,19 @@ public class Unit extends Actor {
 
 		//System.out.println(ActorManager.getActor(getIndex()).getName() + " just updated");
 		if(isReady()){
+			if (ActorManager.getSize() < 4)
+				canFire = true;
+			else
+				canFire = false;
 			if ((int)(Math.random() * 2) == 0){
 				initializeMovement(Point.randomPoint(new RangeSet()));
-				canFire = true;
+				if (ActorManager.getSize() < 4)
+					canFire = true;
+				else
+					canFire = false;
 			}
 			else if (canFire){
 				fire(Point.randomPoint(new RangeSet()));
-				System.out.println("Unit " + getIndex() + " is firing");
 				canFire = false;
 			}
 		}

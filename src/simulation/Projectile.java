@@ -30,7 +30,10 @@ public class Projectile extends Actor{
 	}
 	public boolean collision(){
 		updateValues();
-		return (distance < ActorManager.getActor(targetUnitIndex).getSize());
+		boolean toReturn = (distance < ActorManager.getActor(targetUnitIndex).getSize());
+		if (toReturn)
+			ActorManager.getActor(targetUnitIndex).hasBeenHit = true;
+		return toReturn;
 
 	}
 	public boolean isProjectile(){return true;}

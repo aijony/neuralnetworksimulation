@@ -15,9 +15,12 @@ public class Actor {
 	private VertexMatrix vertices;
 	private Point targetPoint;
 	private int index;
+	public boolean hasBeenHit;
+	public boolean exists = true;
 	protected double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
 	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
-	
+	public int targetUnitIndex;
+	public int originUnitIndex;
 	
 	CountDownLatch waitUpdate = new CountDownLatch(1);
 	

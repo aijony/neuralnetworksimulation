@@ -7,10 +7,12 @@ import graphics.VertexMatrix;
 public class ActorManager {
 	private static ArrayList<Actor> actors;
 	private static int count;
+	private static int steps;
 	
 	public static void initialize(){
 		actors = new ArrayList<Actor>();
 		count = 0;
+		steps = 0;
 	}
 	
 	public static void addActor(Color color, String type, int originUnit){
@@ -41,21 +43,42 @@ public class ActorManager {
 		actors.get(index).update();
 		SpriteManager.update(actors.get(index).getVertexMatrix(), index);
 		if (actors.get(index).outOfBounds() || actors.get(index).collision()){
-			if (actors.get(index).collision())
-				System.out.println("Projectile " + index + " hit its target");
 			actors.remove(index);
 			SpriteManager.dispose(index);
 			count--;
+			
 		}
+		
+		
 	}
 	
 	public static void updateAll(){
 		for (int x = 0; x < count; x++){
 			update(x);
 		}	
+		System.out.println(++steps);
+		if (steps % 15 == 0){
+			exportData();
+			System.out.println("Exporting data");
+			
+		}
 	}
 	
 	public static Actor getActor(int index){
 		return actors.get(index);
+	}
+	public static int getSize(){
+		return actors.size();
+	}
+	public static ReturnData[] exportData(){
+		ReturnData[] data = new ReturnData[4];
+		for (int x = 0; x < getSize(); x++){
+			data[x] = new ReturnData(actors.get(x));
+			actors.get(x).hasBeenHit = false;
+		}
+		for (int x = getSize(); x < 4; x++){
+			data[x] = new ReturnData();
+		}
+		return data;
 	}
 }
