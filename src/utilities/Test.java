@@ -5,7 +5,7 @@ package utilities;
 
 /**
  * @author aidan
- *
+ * Matrix multiplication test
  */
 public class Test {
 

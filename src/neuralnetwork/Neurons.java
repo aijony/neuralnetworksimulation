@@ -17,6 +17,10 @@ public class Neurons {
      
     private int [] neuronsPerLayer;
     
+    /*
+     * Creates neuron matrices. 
+     * For the matrices to work with the matrix math the neurons must be in a 1 by layersize 2d array
+    */
     public Neurons(int [] neuronsPerLayerInput) {
  		setNeuronsPerLayer(neuronsPerLayerInput);
      	values = new ArrayList<double [][] >(getNeuronsPerLayer().length);
@@ -26,10 +30,7 @@ public class Neurons {
  			values.add(currentLayer, new double[1][getNeuronsPerLayer()[currentLayer]]);
  		}
      }
-    
-    
-    
-    
+
      public void setInput(double [][] input){
     	 values.set(0, input);
      }
@@ -38,15 +39,9 @@ public class Neurons {
     	 return values.get(values.size() - 1)[0];
      }
 
-
-
-
 	public int [] getNeuronsPerLayer() {
 		return neuronsPerLayer;
 	}
-
-
-
 
 	public void setNeuronsPerLayer(int [] neuronsPerLayer) {
 		this.neuronsPerLayer = neuronsPerLayer;

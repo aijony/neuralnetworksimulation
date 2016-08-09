@@ -3,6 +3,8 @@ package neuralnetwork;
 import java.util.ArrayList;
 import java.util.Random;
 
+import utilities.MatrixMath;
+
 public class Connections {
 	
 	/*
@@ -18,19 +20,25 @@ public class Connections {
 	
 	private int [] neuronsPerLayer;
 	
+	/*
+		Create an array list of weight matrices. X is the input amount, Y is the output amount.
+	*/
     public Connections(int [] neuronsPerLayerInput) {
 		neuronsPerLayer = neuronsPerLayerInput;
     	weights = new ArrayList<double [] [] >(neuronsPerLayer.length);
 
-		//Loops through setting the weights in between the inputs and the output.
+		//Loops through setting the weights in between the inputs and the output, so there are one less synapse layers than neuron layers
 		for (int currentLayer = 1; currentLayer < neuronsPerLayer.length; currentLayer++) {
 			//Sets a 2 dimensional matrix of doubles. Each matrix's dimensions is x = input size and y = output size
-			double [][] tempWeightMatrix = randomizeWeights(neuronsPerLayer[currentLayer - 1], neuronsPerLayer[currentLayer]);
+			double [][] tempWeightMatrix = randomizeWeights(neuronsPerLayer[currentLayer - 1], neuronsPerLayer[currentLayer] );
 			weights.add(currentLayer - 1, tempWeightMatrix);
 		}
     }
     
-    public Connections(ArrayList<double [] []> inWeights) {
+    /*
+     *     Creates weights based off of pre-existing weights
+     */    
+    public Connections(ArrayList<double [][]> inWeights) {
     	weights = inWeights;
     }
  
