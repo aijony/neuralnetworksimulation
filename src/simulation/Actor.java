@@ -21,6 +21,8 @@ public class Actor {
 	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
 	public int targetUnitIndex;
 	public int originUnitIndex;
+	public RangeSet projectileRanges;
+	public RangeSet movementRanges;
 	
 	CountDownLatch waitUpdate = new CountDownLatch(1);
 	
@@ -34,6 +36,9 @@ public class Actor {
 		positions = new PositionMatrix(numSides);
 		vertices = new VertexMatrix(numSides);
 		findPositions();
+
+		projectileRanges = new RangeSet(-1, -1, 1, 1);
+		movementRanges = new RangeSet(-1, -1, 1, 1);
 	}
 	public Actor(Point l, double o, double sp, String n, double si, int nS){
 		
@@ -66,7 +71,8 @@ public class Actor {
 	public int getIndex(){return index;}
 	public void setIndex(int value){index = value;}
 	public double getSize(){return size;}
-	
+	public void setMovementRanges(double x1, double y1, double x2, double y2){movementRanges = new RangeSet(x1, y1, x2, y2);}
+	public void setProjectileRanges(double x1, double y1, double x2, double y2){projectileRanges = new RangeSet(x1, y1, x2, y2);}
 	
 	protected void findPositions(){
 		double angleOffset = Math.PI / numSides;

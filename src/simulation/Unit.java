@@ -17,6 +17,7 @@ public class Unit extends Actor {
 			targetUnitIndex = 1;
 		else
 			targetUnitIndex = 0;
+		
 	}
 	
 	/*
@@ -46,19 +47,15 @@ public class Unit extends Actor {
 
 		//System.out.println(ActorManager.getActor(getIndex()).getName() + " just updated");
 		if(isReady()){
-			if (ActorManager.getSize() < 4)
-				canFire = true;
-			else
-				canFire = false;
+			
+			
 			if ((int)(Math.random() * 2) == 0){
-				initializeMovement(Point.randomPoint(new RangeSet()));
-				if (ActorManager.getSize() < 4)
-					canFire = true;
-				else
-					canFire = false;
+				initializeMovement(Point.randomPoint(movementRanges));
+				
+				canFire = true;
 			}
-			else if (canFire){
-				fire(Point.randomPoint(new RangeSet()));
+			else if (canFire && ActorManager.getSize() < 4){
+				fire(Point.randomPoint(projectileRanges));
 				canFire = false;
 			}
 		}
@@ -72,11 +69,4 @@ public class Unit extends Actor {
 	public boolean isProjectile(){return false;}
 	public boolean outOfBounds(){return false;}
 	public boolean collision(){return false;}
-	
-	
-	
-	
-	
-	
-	
 }
