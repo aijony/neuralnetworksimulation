@@ -7,11 +7,11 @@ public class ReturnData {
 	public boolean hasBeenHit;
 	public boolean successfulHit;
 	public boolean exists;
-	public int type;
+	public int type;				//0 for unit, 1 for projectile
 	public int targetUnit;
 	public int originUnit;
 	public double i;
-	public double yMove;
+	public double j;
 	
 	public ReturnData(Actor a){
 		x = a.getPos().getX();
@@ -22,6 +22,8 @@ public class ReturnData {
 		type = (a.getName() == "Unit") ? 0 : 1;
 		targetUnit = a.targetUnitIndex;
 		originUnit = a.originUnitIndex;
+		i = a.xMove;
+		j = a.yMove;
 		
 	}
 	public ReturnData(){

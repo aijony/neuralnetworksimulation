@@ -78,7 +78,7 @@ public class ActorManager {
 	public static ReturnData[] exportData(){
 		ReturnData[] data = new ReturnData[4];
 		for (int x = 0; x < getSize(); x++){
-			data[x] = new ReturnData(actors.get(x));
+			data[x] = exportDatum(x);
 			actors.get(x).hasBeenHit = false;
 			actors.get(x).successfulHit = false;
 		}
@@ -86,5 +86,8 @@ public class ActorManager {
 			data[x] = new ReturnData();
 		}
 		return data;
+	}
+	public static ReturnData exportDatum(int index){
+		return new ReturnData(actors.get(index));
 	}
 }
