@@ -1,5 +1,6 @@
 package neuralnetwork;
 import java.util.Scanner;
+
 public class NetworkTest extends NeuralNetworkManager{
 	
 

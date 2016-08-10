@@ -2,7 +2,7 @@ package neuralnetwork;
 
 
 
-public abstract NeuralNetworkManager {
+public abstract class NeuralNetworkManager {
 
 	protected double inputs[][];
 	
