@@ -15,6 +15,8 @@ public class SimulationInteraction extends NeuralNetworkManager{
 		ActorNetwork actorOne = new ActorNetwork(neuronsPerLayerOne, actorOneID, learningRate);
 		ActorNetwork actorTwo = new ActorNetwork(neuronsPerLayerTwo, actorTwoID, learningRate);
 		
+		
+		
 		for (int run = 0; run < 70000; run++) {
 
 			ActorManager.updateAll();

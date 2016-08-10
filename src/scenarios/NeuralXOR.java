@@ -1,11 +1,11 @@
 package scenarios;
 
-import neuralnetwork.NeuralNetworkManager;
+import neuralnetwork.NetworkTest;
 
 public class NeuralXOR {
 	public static void main(String[] args) {
-		NeuralNetworkManager manager = new NeuralNetworkManager();
-		manager.testXOR();
+		NetworkTest manager = new NetworkTest();
+		manager.testGeneric();
 
 	}
 }

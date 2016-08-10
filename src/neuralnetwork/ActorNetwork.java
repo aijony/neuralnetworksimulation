@@ -52,7 +52,7 @@ public class ActorNetwork{
 			//Network learn (back propagate)
 			boolean success = !ActorManager.exportDatum(index).hasBeenHit;
 			
-			network.backards(IOInteraction.checkOutput(success, network.getOutput()));
+			network.backPropagate(IOInteraction.checkOutput(success, network.getOutput()));
 			}
 		
 

@@ -1,6 +1,8 @@
 package neuralnetwork;
 
-public class NeuralNetworkManager {
+
+
+public abstract NeuralNetworkManager {
 
 	protected double inputs[][];
 	
@@ -16,31 +18,9 @@ public class NeuralNetworkManager {
 
 	protected NeuralNetwork network;
 
+
+
 	
-
-	public void testXOR() {
-		
-		neuronsPerLayer = new int[]{ 3, 10, 5, 1 };
-		
-		network = new NeuralNetwork(neuronsPerLayer, learningRate);
-
-		// Inputs for xor
-		inputs = new double[][] { { 1, 1, 1 }, { 1, 0, 1 }, { 0, 1, 1 }, { 0, 0, 1 } };
-
-		// xor training data
-		expectedOutputs = new double[][] { { 0 }, { 1 }, { 1 }, { 0 } };
-
-		int i;
-
-		double error = 1;
-		for (i = 0; i < maxRuns; i++) {
-			error = 0;
-			results(false);
-
-		}
-		results(true);
-	}
-
 	/*
 	 * @params If truue the results will be printed
 	 */

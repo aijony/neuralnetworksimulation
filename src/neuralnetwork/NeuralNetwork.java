@@ -16,7 +16,7 @@ public class NeuralNetwork {
 	/* */
 	public NeuralNetwork(int[] npl, double learningRate) {
 		neuronsPerLayer = npl;
-		for (int index = 1; index < neuronsPerLayer.length - 1; index++) {
+		for (int index = 0; index < neuronsPerLayer.length - 1; index++) {
 			neuronsPerLayer[index]++;
 		}
 		connections = new Connections(neuronsPerLayer);
@@ -25,15 +25,23 @@ public class NeuralNetwork {
 	}
 
 	public void propagate(double[] input, double[] expected) {
-		propagation.forward(input);
-		propagation.backward(expected);
+		forwardPropagate(input);
+		backPropagate(expected);
 	}
 	
-	public void forwardPropagate(double[] input) {
+	public void forwardPropagate(double[] inputDoNotUse) {
+		double[] input = new double[inputDoNotUse.length+1];
+		for(int i = 0; i < input.length; i++){
+			if(i < (input.length-1)){
+				input[i] = inputDoNotUse[i];
+			}
+			else{
+				input[i] = -1;
+			}
+		}
 		propagation.forward(input);
 	}
-	public void backards(double[] expected) {
-		System.out.println(expected[0] + " " + expected[1]);
+	public void backPropagate(double[] expected) {
 		propagation.backward(expected);
 	}
 
