@@ -49,6 +49,14 @@ public class ActorManager {
 		if (useSpriteManager)
 			SpriteManager.update(actors.get(index).getVertexMatrix(), index);
 		if (actors.get(index).outOfBounds() || actors.get(index).collision()){
+			if (actors.get(index).outOfBounds()){
+				actors.get(actors.get(index).targetUnitIndex).hasBeenHit = false;
+				actors.get(actors.get(index).originUnitIndex).successfulHit = false;
+			}
+			if (actors.get(index).collision()){
+				actors.get(actors.get(index).targetUnitIndex).hasBeenHit = true;
+				actors.get(actors.get(index).originUnitIndex).successfulHit = true;
+			}
 			actors.remove(index);
 			if (useSpriteManager)
 				SpriteManager.dispose(index);
@@ -62,7 +70,7 @@ public class ActorManager {
 			update(x);
 		}	
 		steps++;
-		System.out.println(steps);
+		//System.out.println(steps);
 		if (steps % 15 == 0){
 			exportData();
 			
