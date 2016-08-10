@@ -24,7 +24,17 @@ public class NeuralNetwork {
 		propagation = new Propagation(neurons, connections, neuronsPerLayer, learningRate);
 	}
 
-	public void propagate(double[] input, double[] expected) {
+	public void propagate(double[] inputDoNotUse, double[] expected) {
+		double[] input = new double[inputDoNotUse.length+1];
+		for(int i = 0; i < input.length; i++){
+				if(i < (input.length-1)){
+					input[i] = inputDoNotUse[i];
+				}
+				else{
+					input[i] = -1;
+				}
+			}
+		
 		propagation.forward(input);
 		propagation.backward(expected);
 	}
