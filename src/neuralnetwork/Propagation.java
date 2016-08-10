@@ -28,6 +28,9 @@ public class Propagation {
 	 */
 	public void forward(double[] input) {
 		// Sets the input from a 1D array to a "matrix"
+		for(int i = 0; i < input.length; i++){
+			
+		}
 		neurons.set(0, MatrixMath.rowToMatrix(input));
 
 		// Loops tjrpigj tje metwprl

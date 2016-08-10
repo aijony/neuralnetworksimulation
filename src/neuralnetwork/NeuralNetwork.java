@@ -8,7 +8,7 @@ import utilities.MatrixMath;
 public class NeuralNetwork {
 
 	Propagation propagation;
-
+ 
 	int[] neuronsPerLayer;
 	Neurons neurons;
 	Connections connections;
