@@ -4,7 +4,7 @@ public class Projectile extends Actor{
 	private int targetUnitIndex;
 	
 	public Projectile(Unit origin){
-		super(origin.getPos(), origin.getOrientation(), .03, "Projectile", .01, 4);	
+		super(origin.getPos(), origin.getOrientation(), .05, "Projectile", .01, 4);	
 		targetUnitIndex = origin.getTargetUnitIndex();
 		updateValues();
 		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
@@ -31,8 +31,10 @@ public class Projectile extends Actor{
 	public boolean collision(){
 		updateValues();
 		boolean toReturn = (distance < ActorManager.getActor(targetUnitIndex).getSize());
-		if (toReturn)
+		if (toReturn){
 			ActorManager.getActor(targetUnitIndex).hasBeenHit = true;
+			ActorManager.getActor(originUnitIndex).successfulHit = true;
+		}
 		return toReturn;
 
 	}

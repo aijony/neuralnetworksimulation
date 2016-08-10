@@ -53,8 +53,7 @@ public class Display {
 		SpriteManager.initialize();
 		ActorManager.addActor(Color.red(), "Unit", 0);
 		ActorManager.addActor(Color.green(), "Unit", 0);
-		//ActorManager.addActor(Color.blue(), "Unit", 0);
-		
+		//ActorManager.getActor(1).setMovementRanges(-.5, -.5, .5, .5);
 		loop();
 		
 	}
@@ -63,12 +62,7 @@ public class Display {
 
 		while (glfwWindowShouldClose(windowID) == false) {
 			refresh();
-//			try {
-//				Thread.sleep(1);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+//			
 		}
 		terminate();
 	}

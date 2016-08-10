@@ -17,7 +17,8 @@ public class Actor {
 	private int index;
 	public boolean hasBeenHit;
 	public boolean exists = true;
-	protected double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
+	public boolean successfulHit;
+	public double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
 	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
 	public int targetUnitIndex;
 	public int originUnitIndex;
@@ -51,6 +52,8 @@ public class Actor {
 		positions = new PositionMatrix(numSides);
 		vertices = new VertexMatrix(numSides);
 		findPositions();
+		projectileRanges = new RangeSet(-1, -1, 1, 1);
+		movementRanges = new RangeSet(-1, -1, 1, 1);
 	}
 	public Actor(Point l, double o, String n){
 		this(l, o, .05, n, .15, 4);

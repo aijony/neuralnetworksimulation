@@ -31,7 +31,8 @@ public class ActorManager {
 		vertices.setPosition(newActor.getPositionMatrix());
 		vertices.setColor(color);
 		newActor.setVertexMatrix(vertices);
-		newActor.initializeMovement(Point.randomPoint(new RangeSet()));
+		newActor.setMovementRanges(-1, -1, 1, 1);
+		newActor.initializeMovement(Point.randomPoint(newActor.movementRanges));
 		newActor.setIndex(count);
 		actors.add(SpriteManager.newSprite(), newActor);
 		
@@ -48,18 +49,16 @@ public class ActorManager {
 			count--;
 			
 		}
-		
-		
 	}
 	
 	public static void updateAll(){
 		for (int x = 0; x < count; x++){
 			update(x);
 		}	
-		System.out.println(++steps);
+		steps++;
+		System.out.println(steps);
 		if (steps % 15 == 0){
 			exportData();
-			System.out.println("Exporting data");
 			
 		}
 	}
@@ -75,6 +74,7 @@ public class ActorManager {
 		for (int x = 0; x < getSize(); x++){
 			data[x] = new ReturnData(actors.get(x));
 			actors.get(x).hasBeenHit = false;
+			actors.get(x).successfulHit = false;
 		}
 		for (int x = getSize(); x < 4; x++){
 			data[x] = new ReturnData();

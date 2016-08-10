@@ -48,7 +48,7 @@ public class Unit extends Actor {
 		//System.out.println(ActorManager.getActor(getIndex()).getName() + " just updated");
 		if(isReady()){
 			
-			
+			new RangeSet();
 			if ((int)(Math.random() * 2) == 0){
 				initializeMovement(Point.randomPoint(movementRanges));
 				
