@@ -142,5 +142,9 @@ public class Propagation {
 	public double[][] output() {
 		return neurons.get(neurons.size() - 1);
 	}
+	
+	public Connections getWeights(){
+		return new Connections(connections);
+	}
 
 }
