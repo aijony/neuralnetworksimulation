@@ -24,6 +24,7 @@ public class Actor {
 	public int originUnitIndex;
 	public RangeSet projectileRanges;
 	public RangeSet movementRanges;
+	public boolean canFire;
 	
 	CountDownLatch waitUpdate = new CountDownLatch(1);
 	
@@ -76,6 +77,7 @@ public class Actor {
 	public double getSize(){return size;}
 	public void setMovementRanges(double x1, double y1, double x2, double y2){movementRanges = new RangeSet(x1, y1, x2, y2);}
 	public void setProjectileRanges(double x1, double y1, double x2, double y2){projectileRanges = new RangeSet(x1, y1, x2, y2);}
+	public void setCanFire(boolean bullshit){canFire = true;}
 	
 	protected void findPositions(){
 		double angleOffset = Math.PI / numSides;
