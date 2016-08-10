@@ -3,7 +3,7 @@ package neuralnetwork;
 public class NeuralNetworkManager {
 
 	protected double inputs[][];
-	protected double input[];
+	
 	protected double expectedOutputs[][];
 	protected final boolean isTrained = false;
 
@@ -12,14 +12,16 @@ public class NeuralNetworkManager {
 	protected double minErrorCondition = 0.001;
 
 	// NPL is neurons per layer
-	protected int neuronsPerLayer[] = { 3, 10, 5, 1 };
+	protected int neuronsPerLayer[];
 
 	protected NeuralNetwork network;
 
 	
 
 	public void testXOR() {
-
+		
+		neuronsPerLayer = new int[]{ 3, 10, 5, 1 };
+		
 		network = new NeuralNetwork(neuronsPerLayer, learningRate);
 
 		// Inputs for xor

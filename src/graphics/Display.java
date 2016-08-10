@@ -53,7 +53,6 @@ public class Display {
 		SpriteManager.initialize();
 		ActorManager.addActor(Color.red(), "Unit", 0);
 		ActorManager.addActor(Color.green(), "Unit", 0);
-		//ActorManager.getActor(1).setMovementRanges(-.5, -.5, .5, .5);
 		loop();
 		
 	}

@@ -106,6 +106,7 @@ public class Propagation {
 		// calculate first deltas
 		if (synapseLayer == connections.size() - 1) {
 			delta = MatrixMath.subtract(output(), expected);
+			delta = MatrixMath.transpose(delta);
 		} else {
 			// Initial value is brought from previously computed deltas
 			delta = deltas.get(synapseLayer + 1);

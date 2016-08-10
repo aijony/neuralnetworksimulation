@@ -25,7 +25,7 @@ public class Actor {
 	public RangeSet projectileRanges;
 	public RangeSet movementRanges;
 	
-	public CountDownLatch waitMovementUpdate = new CountDownLatch(1);
+	public CountDownLatch waitMovementUpdate = new CountDownLatch(0);
 	
 	public Actor(){
 		position = Point.randomPoint(new RangeSet());
@@ -83,7 +83,6 @@ public class Actor {
 		
 		this.ready = ready;
 		waitMovementUpdate.countDown();
-		waitMovementUpdate = new CountDownLatch(1);
 	}
 	
 	protected void findPositions(){
@@ -168,6 +167,8 @@ public class Actor {
 	}
 	
 	public void initializeMovement(Point newPoint){
+
+		waitMovementUpdate = new CountDownLatch(1);
 		hasBeenHit = false;
 		
 		targetPoint = newPoint;

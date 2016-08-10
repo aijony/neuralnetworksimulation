@@ -17,7 +17,7 @@ public class ActorManager {
 		useSpriteManager = sprites;
 	}
 	
-	public static void addActor(Color color, String type, int originUnit){
+	public static int addActor(Color color, String type, int originUnit){
 		Actor newActor;
 		switch (type){
 		case "Unit":
@@ -40,7 +40,7 @@ public class ActorManager {
 			actors.add(SpriteManager.newSprite(), newActor);
 		else
 			actors.add(count, newActor);
-		count++;
+		return count++;
 		
 	}
 	

@@ -33,6 +33,7 @@ public class NeuralNetwork {
 		propagation.forward(input);
 	}
 	public void backards(double[] expected) {
+		System.out.println(expected[0] + " " + expected[1]);
 		propagation.backward(expected);
 	}
 
