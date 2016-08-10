@@ -2,18 +2,19 @@ package neuralnetwork;
 
 public class NeuralNetworkManager {
 
-	private double inputs[][];
-	private double expectedOutputs[][];
-	private final boolean isTrained = false;
+	protected double inputs[][];
+	protected double input[];
+	protected double expectedOutputs[][];
+	protected final boolean isTrained = false;
 
-	private double learningRate = 12.2;
-	private int maxRuns = 6000;
-	private double minErrorCondition = 0.001;
+	protected double learningRate = 12.2;
+	protected int maxRuns = 6000;
+	protected double minErrorCondition = 0.001;
 
 	// NPL is neurons per layer
-	private int neuronsPerLayer[] = { 3, 10, 5, 1 };
+	protected int neuronsPerLayer[] = { 3, 10, 5, 1 };
 
-	private NeuralNetwork network;
+	protected NeuralNetwork network;
 
 	public static void main(String[] args) {
 		NeuralNetworkManager manager = new NeuralNetworkManager();

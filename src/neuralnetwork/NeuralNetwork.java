@@ -28,6 +28,13 @@ public class NeuralNetwork {
 		propagation.forward(input);
 		propagation.backward(expected);
 	}
+	
+	public void forwardPropagate(double[] input) {
+		propagation.forward(input);
+	}
+	public void backards(double[] expected) {
+		propagation.backward(expected);
+	}
 
 	public double calculateCost(double[] expected) {
 		double[][] difference = MatrixMath.subtract(MatrixMath.rowToMatrix(expected), propagation.output());
