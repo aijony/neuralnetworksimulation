@@ -17,4 +17,11 @@ public class IOInteraction {
 		return output;
 		
 	}
+	
+	public static double[] checkOutput(boolean success, double[][] calculated){
+		if(success)
+			return calculated[0];
+		else
+			return MatrixMath.multiply(calculated, -1)[0];
+	}
 }

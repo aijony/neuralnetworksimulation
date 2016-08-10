@@ -4,8 +4,8 @@ package neuralnetwork;
  import utilities.IOInteraction;
 public class SimulationInteraction extends NeuralNetworkManager{
 	
-	//Initialize network DONE
-	//Setup the input array size DONE
+	//Initialize network
+	//Setup the input array size
 	private int index = 0;
 	private final int outputSize = 2;
 	
@@ -13,7 +13,7 @@ public class SimulationInteraction extends NeuralNetworkManager{
 		input = IOInteraction.getInput(ActorManager.exportDatum(index));
 	}
 	
-	public void runSimulation(){
+	public void runSimulationNetwork() throws InterruptedException{
 		boolean runSimulation = true;
 		
 		ActorManager.initialize(false);
@@ -34,15 +34,16 @@ public class SimulationInteraction extends NeuralNetworkManager{
 			Point outputPoint = new Point(network.getOutput()[0][0], network.getOutput()[0][1]);
 			ActorManager.getActor(index).initializeMovement(outputPoint);
 			
-				//Network waits for response
-					//Success bitwise boolean
-				//Network learn (back propagate)
+			//Network waits for response
+			ActorManager.getActor(index).waitMovementUpdate.await();
+			
+			//Network learn (back propagate)
+			boolean success = !ActorManager.exportDatum(index).hasBeenHit;
+			network.backards(IOInteraction.checkOutput(success, network.getOutput()));
 			
 			
 			ActorManager.updateAll();
 				
-			
-			
 			
 		}
 	}

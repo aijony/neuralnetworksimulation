@@ -1,12 +1,14 @@
 /**
  * 
  */
-package utilities;
+package scenarios;
+
+import utilities.MatrixMath;
 
 /**
  * @author aidan Matrix multiplication test
  */
-public class Test {
+public class MatrixMathTest {
 
 	/**
 	 * @param args

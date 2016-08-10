@@ -16,11 +16,7 @@ public class NeuralNetworkManager {
 
 	protected NeuralNetwork network;
 
-	public static void main(String[] args) {
-		NeuralNetworkManager manager = new NeuralNetworkManager();
-		manager.testXOR();
-
-	}
+	
 
 	public void testXOR() {
 
