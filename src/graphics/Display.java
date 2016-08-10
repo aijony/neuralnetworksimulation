@@ -49,7 +49,7 @@ public class Display {
 		init(width, height, title);
 		
 		
-		ActorManager.initialize();
+		ActorManager.initialize(true);
 		SpriteManager.initialize();
 		ActorManager.addActor(Color.red(), "Unit", 0);
 		ActorManager.addActor(Color.green(), "Unit", 0);

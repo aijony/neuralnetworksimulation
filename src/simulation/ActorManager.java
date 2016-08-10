@@ -8,11 +8,13 @@ public class ActorManager {
 	private static ArrayList<Actor> actors;
 	private static int count;
 	private static int steps;
+	private static boolean useSpriteManager;
 	
-	public static void initialize(){
+	public static void initialize(boolean sprites){
 		actors = new ArrayList<Actor>();
 		count = 0;
 		steps = 0;
+		useSpriteManager = sprites;
 	}
 	
 	public static void addActor(Color color, String type, int originUnit){
@@ -34,18 +36,22 @@ public class ActorManager {
 		newActor.setMovementRanges(-1, -1, 1, 1);
 		newActor.initializeMovement(Point.randomPoint(newActor.movementRanges));
 		newActor.setIndex(count);
-		actors.add(SpriteManager.newSprite(), newActor);
-		
+		if (useSpriteManager)
+			actors.add(SpriteManager.newSprite(), newActor);
+		else
+			actors.add(count, newActor);
 		count++;
 		
 	}
 	
 	public static void update(int index){
 		actors.get(index).update();
-		SpriteManager.update(actors.get(index).getVertexMatrix(), index);
+		if (useSpriteManager)
+			SpriteManager.update(actors.get(index).getVertexMatrix(), index);
 		if (actors.get(index).outOfBounds() || actors.get(index).collision()){
 			actors.remove(index);
-			SpriteManager.dispose(index);
+			if (useSpriteManager)
+				SpriteManager.dispose(index);
 			count--;
 			
 		}
