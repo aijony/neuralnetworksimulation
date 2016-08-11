@@ -11,12 +11,16 @@ public class Projectile extends Actor{
 		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
 		moveTo();
 	}
+	public void update(){
+		moveTo();
+	}
 	public void moveTo(){
 		xMove = getSpeed()*Math.cos(this.getOrientation());
 		yMove = getSpeed()*Math.sin(this.getOrientation());
 		stepTo(xMove, yMove);
 		findPositions();
 		setReady(outOfBounds());
+		System.out.println("The lazers are in motion");
 		//System.out.println("Projectile " + getIndex() + " is stepping");
 	}
 	public boolean outOfBounds(){

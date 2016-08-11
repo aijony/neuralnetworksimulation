@@ -4,15 +4,12 @@ import simulation.ReturnData;
 public class IOInteraction {
 	public static double[] getInput(ReturnData data){
 		
-		double output[] = new double[5] ;
+		double output[] = new double[4] ;
 		
 		output[0] = data.x;
 		output[1] = data.y;
 		output[2] = data.i;
 		output[3] = data.j;
-		
-		//Bias
-		output[4] = 1.0;
 		
 		return output;
 		
@@ -23,5 +20,20 @@ public class IOInteraction {
 			return calculated[0];
 		else
 			return MatrixMath.multiply(calculated, -1)[0];
+	}
+	
+	public static int getProjectileIndex(ReturnData originData, ReturnData[] data){
+		int originUnitID = originData.originUnit;
+		for(ReturnData otherUnit : data){
+			if(otherUnit.targetUnit == originUnitID && otherUnit.originUnit != otherUnit.index){
+				System.out.println(otherUnit.index);
+				return otherUnit.index;
+			}
+		}
+		return -1;
+	}
+	
+	public static int getEnemyIndex(ReturnData data){
+		return data.targetUnit;
 	}
 }

@@ -2,7 +2,7 @@ package neuralnetwork;
 
 
 
-public abstract class NeuralNetworkManager {
+public abstract class NeuralNetworkManager extends Thread{
 
 	protected double inputs[][];
 	
@@ -14,11 +14,11 @@ public abstract class NeuralNetworkManager {
 	protected double minErrorCondition = 0.001;
 
 	// NPL is neurons per layer
-	protected int neuronsPerLayer[];
+	protected int neuronsPerLayer[] ;
 
 	protected NeuralNetwork network;
 
-
+	
 
 	
 	/*

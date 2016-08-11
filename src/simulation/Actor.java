@@ -26,7 +26,7 @@ public class Actor {
 	public RangeSet movementRanges;
 	public boolean canFire;
 	
-	public CountDownLatch waitMovementUpdate = new CountDownLatch(0);
+	public CountDownLatch waitMovementUpdate = new CountDownLatch(1);
 	
 	public Actor(){
 		position = Point.randomPoint(new RangeSet());

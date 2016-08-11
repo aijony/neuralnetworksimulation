@@ -1,10 +1,13 @@
 package simulation;
 
+import java.util.concurrent.CountDownLatch;
+
 import graphics.Color;
 
 public class Unit extends Actor {
 	
-	
+
+	public CountDownLatch waitReload = new CountDownLatch(1);
 	private boolean canFire;
 	
 	public Unit(int count){
@@ -25,12 +28,16 @@ public class Unit extends Actor {
 	 */
 	public Unit(int d, int h, double s, int c, String n, Point p) 
 	{
+		
 		super(p, 0, s, n, .05, 4);
 		canFire = true;
 	}
 	
 	public int getTargetUnitIndex(){return targetUnitIndex;}
-	public void setCanFire(boolean tOrF){canFire = tOrF;}
+	
+	public void setCanFire(boolean trueOrFalse){
+
+		canFire = trueOrFalse;}
 	
 	/*
 	 * 	@brief	sets target point to random x/y coordinate from (0, 0) to (100, 100)
@@ -39,7 +46,9 @@ public class Unit extends Actor {
 	 */
 	
 	
-	private void fire(Point target){
+	public void fire(Point target){
+		System.out.println("FIRE THE LAZERS");
+		waitReload = new CountDownLatch(1);
 		successfulHit = false;
 		ActorManager.addActor(Color.blue(), "Projectile", getIndex());
 	}
@@ -51,12 +60,12 @@ public class Unit extends Actor {
 			
 			new RangeSet();
 			if ((int)(Math.random() * 2) == 0){
-				initializeMovement(Point.randomPoint(movementRanges));
+				//initializeMovement(Point.randomPoint(movementRanges));
 				
 			}
 			else if (canFire && ActorManager.getSize() < 4){
-				fire(Point.randomPoint(projectileRanges));
-				canFire = false;
+				//fire(Point.randomPoint(projectileRanges));
+				setCanFire(false);
 			}
 		}
 		else{

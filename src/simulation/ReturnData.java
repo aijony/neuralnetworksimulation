@@ -10,6 +10,7 @@ public class ReturnData {
 	public int type;				//0 for unit, 1 for projectile
 	public int targetUnit;
 	public int originUnit;
+	public int index;
 	public double i;
 	public double j;
 	
@@ -22,6 +23,7 @@ public class ReturnData {
 		type = (a.getName() == "Unit") ? 0 : 1;
 		targetUnit = a.targetUnitIndex;
 		originUnit = a.originUnitIndex;
+		index = a.getIndex();
 		i = a.xMove;
 		j = a.yMove;
 		

@@ -36,32 +36,30 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import neuralnetwork.SimulationInteraction;
 import simulation.ActorManager;
-public class Display {
+import simulation.Updater;
+public class Display extends Thread{
 
 	// Window handler for GLFW
 	private long windowID;
+	Updater updater;
 	/*
 	 * Initializes GLFW and setups all window/GLFW properties
 	 */
 	public Display(int width, int height, String title) {
 		
 		init(width, height, title);
+		updater = new Updater();
 		
-		
-		ActorManager.initialize(true);
-		SpriteManager.initialize();
-		ActorManager.addActor(Color.red(), "Unit", 0);
-		ActorManager.addActor(Color.green(), "Unit", 0);
-		loop();
 		
 	}
 
-	public void loop() {
+	public void run() {
 
 		while (glfwWindowShouldClose(windowID) == false) {
 			refresh();
-//			
+			updater.run();
 		}
 		terminate();
 	}

@@ -1,5 +1,6 @@
 package simulation;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import graphics.Color;
 import graphics.SpriteManager;
@@ -36,15 +37,19 @@ public class ActorManager {
 		newActor.setMovementRanges(-1, -1, 1, 1);
 		newActor.initializeMovement(Point.randomPoint(newActor.movementRanges));
 		newActor.setIndex(count);
-		if (useSpriteManager)
-			actors.add(SpriteManager.newSprite(), newActor);
-		else
+		if (useSpriteManager){
+			count = SpriteManager.newSprite();
+			actors.add(count, newActor);}
+		else{
 			actors.add(count, newActor);
-		return count++;
+		
+		}
+		return count++;	
 		
 	}
 	
 	public static void update(int index){
+		System.out.println("no more lazers");
 		actors.get(index).update();
 		if (useSpriteManager)
 			SpriteManager.update(actors.get(index).getVertexMatrix(), index);
@@ -52,18 +57,22 @@ public class ActorManager {
 			if (actors.get(index).collision()){
 				actors.get(actors.get(index).targetUnitIndex).hasBeenHit = true;
 				actors.get(actors.get(index).originUnitIndex).successfulHit = true;
+				
 			}
+			
 			actors.get(actors.get(index).originUnitIndex).setCanFire(true);
+			((Unit) actors.get(actors.get(index).originUnitIndex)).waitReload.countDown();
 			actors.remove(index);
 			if (useSpriteManager)
-				SpriteManager.dispose(index);
-			count--;
+				count = SpriteManager.dispose(index);
+			else
+				count--;
 			
 		}
 	}
 	
 	public static void updateAll(){
-		for (int x = 0; x < count; x++){
+		for (int x = 0; x < actors.size(); x++){
 			update(x);
 		}	
 		steps++;
@@ -84,8 +93,6 @@ public class ActorManager {
 		ReturnData[] data = new ReturnData[4];
 		for (int x = 0; x < getSize(); x++){
 			data[x] = exportDatum(x);
-			actors.get(x).hasBeenHit = false;
-			actors.get(x).successfulHit = false;
 		}
 		for (int x = getSize(); x < 4; x++){
 			data[x] = new ReturnData();
@@ -93,6 +100,9 @@ public class ActorManager {
 		return data;
 	}
 	public static ReturnData exportDatum(int index){
+		if(index >= actors.size()){
+			return new ReturnData();
+		}
 		return new ReturnData(actors.get(index));
 	}
 	public static int getOriginProjectileIndex(int index){
