@@ -7,6 +7,7 @@ public class Projectile extends Actor{
 		super(origin.getPos(), origin.getOrientation(), .05, "Projectile", .01, 4);	
 		targetUnitIndex = origin.getTargetUnitIndex();
 		updateValues();
+		originUnitIndex = origin.getIndex();
 		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
 		moveTo();
 	}

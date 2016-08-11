@@ -30,7 +30,7 @@ public class Unit extends Actor {
 	}
 	
 	public int getTargetUnitIndex(){return targetUnitIndex;}
-	
+	public void setCanFire(boolean tOrF){canFire = tOrF;}
 	
 	/*
 	 * 	@brief	sets target point to random x/y coordinate from (0, 0) to (100, 100)
@@ -53,7 +53,6 @@ public class Unit extends Actor {
 			if ((int)(Math.random() * 2) == 0){
 				initializeMovement(Point.randomPoint(movementRanges));
 				
-				canFire = true;
 			}
 			else if (canFire && ActorManager.getSize() < 4){
 				fire(Point.randomPoint(projectileRanges));

@@ -49,14 +49,11 @@ public class ActorManager {
 		if (useSpriteManager)
 			SpriteManager.update(actors.get(index).getVertexMatrix(), index);
 		if (actors.get(index).outOfBounds() || actors.get(index).collision()){
-			if (actors.get(index).outOfBounds()){
-				actors.get(actors.get(index).targetUnitIndex).hasBeenHit = false;
-				actors.get(actors.get(index).originUnitIndex).successfulHit = false;
-			}
 			if (actors.get(index).collision()){
 				actors.get(actors.get(index).targetUnitIndex).hasBeenHit = true;
 				actors.get(actors.get(index).originUnitIndex).successfulHit = true;
 			}
+			actors.get(actors.get(index).originUnitIndex).setCanFire(true);
 			actors.remove(index);
 			if (useSpriteManager)
 				SpriteManager.dispose(index);
@@ -97,5 +94,11 @@ public class ActorManager {
 	}
 	public static ReturnData exportDatum(int index){
 		return new ReturnData(actors.get(index));
+	}
+	public static int getOriginProjectileIndex(int index){
+		for (int x = 2; x < actors.size(); x++)
+			if (actors.get(x).originUnitIndex == index)
+				return x;
+		return 2;
 	}
 }
