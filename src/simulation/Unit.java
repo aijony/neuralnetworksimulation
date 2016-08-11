@@ -47,33 +47,17 @@ public class Unit extends Actor {
 	
 	
 	public void fire(Point target){
-		System.out.println("FIRE THE LAZERS");
+		 if (true){
 		waitReload = new CountDownLatch(1);
 		successfulHit = false;
+		
 		ActorManager.addActor(Color.blue(), "Projectile", getIndex());
+		canFire = true;
+		
+		}
 	}
 
-	public void update(){
 
-		//System.out.println(ActorManager.getActor(getIndex()).getName() + " just updated");
-		if(isReady()){
-			
-			new RangeSet();
-			if ((int)(Math.random() * 2) == 0){
-				//initializeMovement(Point.randomPoint(movementRanges));
-				
-			}
-			else if (canFire && ActorManager.getSize() < 4){
-				//fire(Point.randomPoint(projectileRanges));
-				setCanFire(false);
-			}
-		}
-		else{
-			moveTo();
-		}
-			
-			
-	}
 	
 	public boolean isProjectile(){return false;}
 	public boolean outOfBounds(){return false;}

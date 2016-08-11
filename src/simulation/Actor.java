@@ -19,21 +19,21 @@ public class Actor {
 	public boolean exists = true;
 	public boolean successfulHit;
 	public double xDiff, yDiff, xMove, yMove, distance; //Doubles needed to calculate the stepTo method
-	private boolean ready = false; //Defines whether or not the actor is ready to aim for a new spot
+	private boolean ready = true; //Defines whether or not the actor is ready to aim for a new spot
 	public int targetUnitIndex;
 	public int originUnitIndex;
 	public RangeSet projectileRanges;
 	public RangeSet movementRanges;
-	public boolean canFire;
+	public boolean canFire = true;
 	
 	public CountDownLatch waitMovementUpdate = new CountDownLatch(1);
 	
 	public Actor(){
 		position = Point.randomPoint(new RangeSet());
 		orientation = Math.random() * Math.PI / 2;
-		speed = .02;
+		speed = .009;
 		name = "Default name";
-		size = .2;
+		size = .07;
 		numSides = 4;
 		positions = new PositionMatrix(numSides);
 		vertices = new VertexMatrix(numSides);
@@ -158,18 +158,17 @@ public class Actor {
 	
 	
 	public void update(){
-		if(isReady()){
-			initializeMovement(Point.randomPoint(new RangeSet()));
-		}
-		else{
+		if(ready)
+			initializeMovement(Point.randomPoint(movementRanges));
 			moveTo();
-		}
+		
 			
 			
 	}
 	
 	public void initializeMovement(Point newPoint){
-
+		System.out.println("init move");
+		
 		waitMovementUpdate = new CountDownLatch(1);
 		hasBeenHit = false;
 		
@@ -183,7 +182,7 @@ public class Actor {
 		
 		distance = (double)(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
 		setOrientation(qualifyAngle(Math.acos(xDiff / distance) , isPositive(xDiff), isPositive(yDiff)));
-	
+		
 		moveTo();
 	}
 	public boolean isProjectile(){return false;}

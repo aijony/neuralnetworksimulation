@@ -14,9 +14,10 @@ public abstract class ActorNetwork extends Thread{
 		private NeuralNetwork network;
 		private  double learningRate;
 		
-		protected boolean success;
+		protected boolean success = false;
 		protected Point outputPoint;
 		protected int projectileIndex = 0;
+		
 		public ActorNetwork(int[] npl, int indexParam, double learnRate){
 			neuronsPerLayer = npl;
 			index = indexParam;
@@ -36,26 +37,25 @@ public abstract class ActorNetwork extends Thread{
 		protected abstract void awaitUpdate();
 		protected abstract void calculateSuccess();
 		protected abstract void setOutput();
-		
+		protected abstract boolean checkReady();
 		public void run(){
-			
+			if(checkReady()){
 			//Simulation sends inputs 
 			setInput();
+			
 			if(projectileIndex != -1){
+			calculateSuccess();
+			network.backPropagate(IOInteraction.checkOutput(success, network.getOutput()));	
 			//Simulation waits for response
 			//Network outputs (forward propagate)
 			network.forwardPropagate(input);
 			outputPoint = new Point(network.getOutput()[0][0], network.getOutput()[0][1]);
 			setOutput();
 			
-			//Network waits for response'
-			////awaitUpdate();
-			calculateSuccess();
 			
-			System.out.println(outputPoint);
-			network.backPropagate(IOInteraction.checkOutput(success, network.getOutput()));
+			}
 			}
 			}
 		
-
+			
 }

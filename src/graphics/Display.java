@@ -37,8 +37,8 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import neuralnetwork.SimulationInteraction;
+import scenarios.Updater;
 import simulation.ActorManager;
-import simulation.Updater;
 public class Display extends Thread{
 
 	// Window handler for GLFW

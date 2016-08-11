@@ -15,7 +15,7 @@ public class AimingNetwork extends ActorNetwork{
 
 	protected void calculateSuccess(){
 		//Network learn (back propagate)
-		success = !ActorManager.exportDatum(index).successfulHit;
+		success = ActorManager.exportDatum(index).successfulHit;
 	}
 	
 	protected void awaitUpdate(){
@@ -32,5 +32,10 @@ public class AimingNetwork extends ActorNetwork{
 	
 	protected void setOutput(){
 		((Unit) (ActorManager.getActor(index))).fire(outputPoint);
+	}
+
+	
+	protected boolean checkReady() {
+		return true; // ActorManager.getActor(index).canFire;
 	}
 }

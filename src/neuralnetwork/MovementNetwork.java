@@ -1,6 +1,6 @@
 package neuralnetwork;
 
-import simulation.ActorManager;
+import simulation.*;
 import utilities.IOInteraction;
 
 public class MovementNetwork extends ActorNetwork{
@@ -20,6 +20,7 @@ public class MovementNetwork extends ActorNetwork{
 	
 	protected void calculateSuccess(){
 		//Network learn (back propagate)
+		
 		success = !ActorManager.exportDatum(index).hasBeenHit;
 	}
 	
@@ -35,5 +36,11 @@ public class MovementNetwork extends ActorNetwork{
 	
 	protected void setOutput(){
 		ActorManager.getActor(index).initializeMovement(outputPoint);
+		
+	}
+	
+	protected boolean checkReady() {
+		System.out.println( ActorManager.getActor(index).isReady());
+		return ActorManager.getActor(index).isReady();
 	}
 }

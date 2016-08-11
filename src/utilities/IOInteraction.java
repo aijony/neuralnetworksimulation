@@ -17,9 +17,9 @@ public class IOInteraction {
 	
 	public static double[] checkOutput(boolean success, double[][] calculated){
 		if(success)
-			return calculated[0];
+			return  MatrixMath.multiply(calculated, 3)[0];
 		else
-			return MatrixMath.multiply(calculated, -1)[0];
+			return MatrixMath.multiply(calculated, -3)[0];
 	}
 	
 	public static int getProjectileIndex(ReturnData originData, ReturnData[] data){

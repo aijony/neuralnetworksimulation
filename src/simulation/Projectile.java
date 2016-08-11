@@ -4,7 +4,7 @@ public class Projectile extends Actor{
 	private int targetUnitIndex;
 	
 	public Projectile(Unit origin){
-		super(origin.getPos(), origin.getOrientation(), .05, "Projectile", .01, 4);	
+		super(origin.getPos(), origin.getOrientation(), .015, "Projectile", .01, 4);	
 		targetUnitIndex = origin.getTargetUnitIndex();
 		updateValues();
 		originUnitIndex = origin.getIndex();
@@ -20,7 +20,6 @@ public class Projectile extends Actor{
 		stepTo(xMove, yMove);
 		findPositions();
 		setReady(outOfBounds());
-		System.out.println("The lazers are in motion");
 		//System.out.println("Projectile " + getIndex() + " is stepping");
 	}
 	public boolean outOfBounds(){

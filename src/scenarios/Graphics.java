@@ -12,15 +12,14 @@ public class Graphics {
 	public void run() {
 		
 		
-		display = new Display(500, 500, "jason");
-		SpriteManager.initialize();
+
+		
 		ActorManager.initialize(true);
+		SpriteManager.initialize();
+		display = new Display(900, 900, "jason");
 		
 		
-		
-		SimulationInteraction simulation = new SimulationInteraction();
-		simulation.run();
-		
+		System.out.println("Display");
 		display.run();
 		
 	}

@@ -11,6 +11,8 @@ public class ActorManager {
 	private static int steps;
 	private static boolean useSpriteManager;
 	
+	
+	public static CountDownLatch ready = new CountDownLatch(0);
 	public static void initialize(boolean sprites){
 		actors = new ArrayList<Actor>();
 		count = 0;
@@ -49,7 +51,7 @@ public class ActorManager {
 	}
 	
 	public static void update(int index){
-		System.out.println("no more lazers");
+		
 		actors.get(index).update();
 		if (useSpriteManager)
 			SpriteManager.update(actors.get(index).getVertexMatrix(), index);
@@ -72,15 +74,13 @@ public class ActorManager {
 	}
 	
 	public static void updateAll(){
+		ready = new CountDownLatch(1);
 		for (int x = 0; x < actors.size(); x++){
 			update(x);
 		}	
 		steps++;
-		//System.out.println(steps);
-		if (steps % 15 == 0){
-			exportData();
-			
-		}
+		
+		ready.countDown();
 	}
 	
 	public static Actor getActor(int index){
@@ -90,11 +90,11 @@ public class ActorManager {
 		return actors.size();
 	}
 	public static ReturnData[] exportData(){
-		ReturnData[] data = new ReturnData[4];
+		ReturnData[] data = new ReturnData[400];
 		for (int x = 0; x < getSize(); x++){
 			data[x] = exportDatum(x);
 		}
-		for (int x = getSize(); x < 4; x++){
+		for (int x = getSize(); x < 400; x++){
 			data[x] = new ReturnData();
 		}
 		return data;
