@@ -26,7 +26,7 @@ public class Actor {
 	public RangeSet movementRanges;
 	public boolean canFire;
 	
-	CountDownLatch waitUpdate = new CountDownLatch(1);
+	public CountDownLatch waitMovementUpdate = new CountDownLatch(0);
 	
 	public Actor(){
 		position = Point.randomPoint(new RangeSet());
@@ -71,13 +71,21 @@ public class Actor {
 	public void setVertexMatrix(VertexMatrix newMatrix){vertices = newMatrix;}
 	public int getNumSides(){return numSides;}
 	public boolean isReady() {return ready;}
-	public void setReady(boolean ready) {this.ready = ready;}
+	
 	public int getIndex(){return index;}
 	public void setIndex(int value){index = value;}
 	public double getSize(){return size;}
 	public void setMovementRanges(double x1, double y1, double x2, double y2){movementRanges = new RangeSet(x1, y1, x2, y2);}
 	public void setProjectileRanges(double x1, double y1, double x2, double y2){projectileRanges = new RangeSet(x1, y1, x2, y2);}
 	public void setCanFire(boolean bullshit){canFire = true;}
+	
+	
+	
+	public void setReady(boolean ready) {
+		
+		this.ready = ready;
+		waitMovementUpdate.countDown();
+	}
 	
 	protected void findPositions(){
 		double angleOffset = Math.PI / numSides;
@@ -161,6 +169,10 @@ public class Actor {
 	}
 	
 	public void initializeMovement(Point newPoint){
+
+		waitMovementUpdate = new CountDownLatch(1);
+		hasBeenHit = false;
+		
 		targetPoint = newPoint;
 
 		xDiff = targetPoint.getX() - getPos().getX();	//remaining difference between current and goal x

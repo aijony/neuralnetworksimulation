@@ -40,6 +40,7 @@ public class Unit extends Actor {
 	
 	
 	private void fire(Point target){
+		successfulHit = false;
 		ActorManager.addActor(Color.blue(), "Projectile", getIndex());
 	}
 

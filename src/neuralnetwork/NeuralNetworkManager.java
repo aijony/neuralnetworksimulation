@@ -1,47 +1,26 @@
 package neuralnetwork;
 
-public class NeuralNetworkManager {
 
-	private double inputs[][];
-	private double expectedOutputs[][];
-	private final boolean isTrained = false;
 
-	private double learningRate = 12.2;
-	private int maxRuns = 6000;
-	private double minErrorCondition = 0.001;
+public abstract NeuralNetworkManager {
+
+	protected double inputs[][];
+	
+	protected double expectedOutputs[][];
+	protected final boolean isTrained = false;
+
+	protected double learningRate = 12.2;
+	protected int maxRuns = 6000;
+	protected double minErrorCondition = 0.001;
 
 	// NPL is neurons per layer
-	private int neuronsPerLayer[] = { 3, 10, 5, 1 };
+	protected int neuronsPerLayer[];
 
-	private NeuralNetwork network;
+	protected NeuralNetwork network;
 
-	public static void main(String[] args) {
-		NeuralNetworkManager manager = new NeuralNetworkManager();
-		manager.testXOR();
 
-	}
 
-	public void testXOR() {
-
-		network = new NeuralNetwork(neuronsPerLayer, learningRate);
-
-		// Inputs for xor
-		inputs = new double[][] { { 1, 1, 1 }, { 1, 0, 1 }, { 0, 1, 1 }, { 0, 0, 1 } };
-
-		// xor training data
-		expectedOutputs = new double[][] { { 0 }, { 1 }, { 1 }, { 0 } };
-
-		int i;
-
-		double error = 1;
-		for (i = 0; i < maxRuns; i++) {
-			error = 0;
-			results(false);
-
-		}
-		results(true);
-	}
-
+	
 	/*
 	 * @params If truue the results will be printed
 	 */

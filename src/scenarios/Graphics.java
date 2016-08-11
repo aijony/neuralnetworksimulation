@@ -1,4 +1,6 @@
-package graphics;
+package scenarios;
+
+import graphics.Display;
 
 public class Graphics {
 
