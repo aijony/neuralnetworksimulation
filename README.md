@@ -1,4 +1,6 @@
+
 # neuralnetworksimulation
+
 A simple neural network simulation.
 Updated 11 August 2016
 
